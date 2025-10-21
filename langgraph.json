@@ -1,0 +1,10 @@
+{
+  "entry": "app/main.py",
+  "venv": ".env",
+  "description": "LangGraph workflow config. Adjust as needed.",
+  "dependencies": ["langgraph", "fastapi", "pydantic", "rich", "scikit-learn"],
+  "graphs": {
+    "scenario_a": "app.scenario_a:compiled_graph_a",
+    "scenario_b": "app.scenario_b:compiled_graph_b"
+  }
+}

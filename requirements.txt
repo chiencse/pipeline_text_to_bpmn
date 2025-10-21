@@ -1,0 +1,17 @@
+langchain
+langchain-community
+langchain-openai
+langgraph-cli[inmem]
+chromadb 
+sentence_transformers
+rank_bm25
+transformers
+lxml
+huggingface-hub
+json5 
+fastapi
+spacy
+uvicorn
+google-generativeai
+rich
+
