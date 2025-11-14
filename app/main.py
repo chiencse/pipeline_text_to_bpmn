@@ -91,7 +91,7 @@ def set_mem(req: MemoryReq):
 #             pretty_print_state(node_data)
             
 if __name__ == "__main__":
-    compiled = build_graph_a()
+    compiled = build_graph_b()
 
     # state vào thử nghiệm
     state = {"text": "Send email with Gmail after creating sheet."}

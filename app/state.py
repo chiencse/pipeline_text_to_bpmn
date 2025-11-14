@@ -8,6 +8,7 @@ from typing_extensions import TypedDict
 class PipelineState(TypedDict, total=False):
     text: str
     chunks: List[str]
+    preprocess: Dict[str, Any]
     entities: List[Dict]
     relations: List[Dict]
     candidates: List[Dict]
@@ -15,6 +16,7 @@ class PipelineState(TypedDict, total=False):
     mapping: List[Dict]
     config: Dict[str, Any]
     meta: Dict[str, Any]
+    syntax: List[Dict]
 
 def log_state(state, step=None, log_dir="./app/viz/logs"):
     """

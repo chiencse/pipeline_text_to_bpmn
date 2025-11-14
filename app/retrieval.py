@@ -92,7 +92,7 @@ def _rule_bonus(query: str, meta: Dict) -> float:
     }
     for k, hints in aliases.items():
         if pkg == k and any(h in q for h in hints):
-            bonus += 0.08
+            bonus += 0.1
             break
 
     # 3) required args overlap
@@ -115,15 +115,15 @@ def _rule_bonus(query: str, meta: Dict) -> float:
     return min(bonus, 0.30)
 
 def hybrid_search(query: str, k: int = 5,
-                  w_bm25: float = 0.5,
-                  w_vec: float = 0.4,
+                  w_bm25: float = 0.4,
+                  w_vec: float = 0.5,
                   w_rule: float = 0.1) -> List[Dict]:
     """
     Hybrid search:
       score = w_bm25 * bm25_norm + w_vec * cos_sim_norm + w_rule * rule_bonus
     Trả về top-k ứng viên (đã sort).
     """
-
+    print(f"🔍 Hybrid search for query: '{query}' (k={k})")
     if not query.strip():
         return []
 
@@ -238,18 +238,84 @@ def hybrid_search(query: str, k: int = 5,
 
     return out[:k]
 
-def build_query_from_entities(entities: List[Dict]) -> str:
-    acts = " ".join(e.get("text","") for e in entities if e.get("label") == "ACT")
-    docs = " ".join(e.get("text","") for e in entities if e.get("label") == "DOC")
-    sys  = " ".join(e.get("text","") for e in entities if e.get("label") == "SYS")
-    role = " ".join(e.get("text","") for e in entities if e.get("label") == "ROLE")
-    q = f"{acts} {docs} {sys} {role}".strip()
-    return q or "process task flow"
+# def build_query_from_entities(entities: List[Dict]) -> str:
+#     """
+#     Build a compact query string from extracted entities (preserve order + action-priority).
+#     - Uses 'start' if present to determine original order; otherwise input order.
+#     - Moves Actions to the front but preserves relative ordering within each label group.
+#     - Keeps max_tokens to avoid overly long queries.
+#     """
+#     if not entities:
+#         return "process task flow"
 
-if __name__ == "__main__":
-    pass
-    # test nhanh
-    # q = "Send email with Gmail after creating sheet."
-    # res = hybrid_search(q, k=5)
-    # for r in res:
-        # print(f"- {r['activity_id']} (score={r['score']:.4f}): {r['text']}")
+#     # normalize and keep original index
+#     ents = []
+#     for i, e in enumerate(entities):
+#         txt = (e.get("text") or "").strip()
+#         if not txt:
+#             continue
+#         lbl = (e.get("label") or "").strip().lower()
+#         start = e.get("start")
+#         ents.append({"text": txt, "label": lbl, "start": start, "idx": i})
+
+#     if not ents:
+#         return "process task flow"
+
+#     # sort by start if any start exists; else by input order
+#     if any(e.get("start") is not None for e in ents):
+#         ents_sorted = sorted(ents, key=lambda x: (x.get("start") or 0, x["idx"]))
+#     else:
+#         ents_sorted = sorted(ents, key=lambda x: x["idx"])
+
+#     # preserve relative order when grouping: collect lists in the order they appear
+#     groups = {"action": [], "object": [], "resource": [], "process": [],
+#               "system": [], "role": [], "event": [], "condition": [],
+#               "datafield": [], "output": []}
+
+#     for e in ents_sorted:
+#         lbl = e["label"]
+#         if lbl in groups:
+#             groups[lbl].append(e["text"])
+#         else:
+#             # map close variants to sensible buckets
+#             if "data" in lbl:
+#                 groups["datafield"].append(e["text"])
+#             elif lbl in ("doc", "document"):
+#                 groups["resource"].append(e["text"])
+#             else:
+#                 groups["object"].append(e["text"])
+
+#     # create weighted list: actions first (in original relative order), then objects/resources/process, then rest
+#     weighted_order = []
+#     weighted_order.extend(groups["action"])
+#     for k in ("object", "resource", "process"):
+#         weighted_order.extend(groups[k])
+#     for k in ("system", "role", "event", "condition", "datafield", "output"):
+#         weighted_order.extend(groups[k])
+
+#     # remove duplicates while preserving order
+#     seen = set()
+#     ordered_terms = []
+#     for t in weighted_order:
+#         if not t or t in seen:
+#             continue
+#         seen.add(t)
+#         ordered_terms.append(t)
+
+#     # limit tokens to avoid too-long queries
+#     max_tokens = 40
+#     q = " ".join(ordered_terms)
+#     toks = q.split()
+#     if len(toks) > max_tokens:
+#         q = " ".join(toks[:max_tokens])
+
+#     return q or "process task flow"
+
+
+# if __name__ == "__main__":
+#     pass
+#     # test nhanh
+#     # q = "Send email with Gmail after creating sheet."
+#     # res = hybrid_search(q, k=5)
+#     # for r in res:
+#         # print(f"- {r['activity_id']} (score={r['score']:.4f}): {r['text']}")

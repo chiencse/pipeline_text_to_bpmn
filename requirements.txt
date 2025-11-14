@@ -14,4 +14,5 @@ spacy
 uvicorn
 google-generativeai
 rich
+spacy
 

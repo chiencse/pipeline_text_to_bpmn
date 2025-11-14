@@ -17,21 +17,52 @@ MODEL_NER = "gemini-2.0-flash"
 MODEL_BPMN = "gemini-2.5-pro"  
 
 # ========== CALL NER ==========
-def call_llm_ner(chunks: List[str]) -> List[Dict]:
+def call_llm_ner(state: List[str]) -> List[Dict]:
     """
     Gọi Gemini để thực hiện NER (Named Entity Recognition)
+    
+    Use POS + dependency info to:
+    - Prefer nouns (NN, NNP, NNS, NNPS) as "object", "role", "system", "resource", or "process" depending on context and modifiers.
+    - Use `nsubj`, `dobj`, `acl`, `conj`, `prep` relations to identify actor → action → object patterns.
+    Dependencies parser:
+    {syntax_parser}
     """
+    syntax_parser = state.get("syntax", {})
+    chunks = state.get("chunks", [])
+    full_text = chunks[0].get("text", "") if chunks else ""
     prompt = f"""
-    You are an information extraction model.
-    Extract entities (actions, objects, roles, systems) from the following text chunks.
-    Return JSON list only, each entity as:
-      {{"text": "...", "label": "...", "confidence": 0.0}}
-    Text chunks: {chunks}
+    You are an advanced information extraction model specialized in Business Process Management (BPMN) and Enterprise Resource Planning (ERP) domains.
+
+    Your task is to extract **semantic entities** that describe elements of business processes and system interactions.
+
+    From the following text chunks, extract and classify entities into one of these categories:
+    - "Action" → verbs or phrases that describe a process step or user/system activity
+    - "Object" → business objects or data items being manipulated (e.g., request, form, order)
+    - "Role" → human or system actors performing actions (e.g., officer, employee, system)
+    - "System" → specific applications or modules (e.g., SAP, Odoo, CRM)
+    - "Event" → triggers or conditions initiating or following a process (e.g., on approval, when form is submitted)
+    - "DataField" → specific attributes, input fields, or information pieces (e.g., user ID, status)
+    - "Condition" → logical or business rules controlling the process (e.g., if amount > 5000)
+    - "Resource" → documents, templates, or other assets involved (e.g., approval form, report)
+    - "Process" → explicit process or subprocess names (e.g., member onboarding process)
+    - "Output" → outcomes or system responses (e.g., notification sent, confirmation message)
+
+    Return ONLY a **valid JSON list**, where each item has the format:
+    {{
+      "text": "...",
+      "label": "...",
+      "confidence": 0.0
+      "start": 0,
+    }}
+
+    Do not include explanations or text outside of the JSON.
+    Text chunks:
+    {full_text}
     """
-
+    
     model = genai.GenerativeModel(MODEL_NER)
-    response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
-
+    response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json",  "temperature": 0.1})
+    print("Token used in NER call:", response.usage_metadata)
     try:
         entities = response.text
         import json
@@ -41,61 +72,75 @@ def call_llm_ner(chunks: List[str]) -> List[Dict]:
         return []
 
 # ========== CALL BPMN WITH MAPPING ==========
-def call_llm_bpmn_with_mapping(text: str, entities: List[Dict], candidates: List[Dict]) -> GraphOutput:
+def call_llm_bpmn_with_mapping(text: str, entities: List[Dict], candidates: List[Dict], syntax_parser: List[Dict]) -> GraphOutput:
     """
     Gọi Gemini để sinh BPMN flow + mapping.
     """
     model = genai.GenerativeModel(MODEL_BPMN)
+    
 
     prompt = f"""
-    You are a process modeling assistant to mapping candidate activities to BPMN Process. Your task is to generate a BPMN process model and map candidate activities to the BPMN nodes.
-    If candidate activities is not proper with context of the Input text, you can ignore them. Do not need use all candidate activities.
-    Input text describes request of user about business process.
-    Entities is a list of extracted entities from the text.
-    Candidate Activities is a list of candidate activities retrieved from the activity library.
-    Entities: {entities} 
-    Candidate Activities: {candidates}
-    Please output only JSON in the following structure:
+    You are a process modeling assistant in the context RPA. Generate a BPMN process model and map candidate activities to BPMN nodes.
+    Context & high-level rules:
+    - Use BPMN to represent the process. Each software robot (bot) must be represented as a subprocess assignment (bot id) via node.subprocess or mapping.bot_id.
+    - If a task is fully automatable by a bot, mark mapping.is_automatic = true and assign mapping.bot_id (e.g., "bot1"). If a task requires a human, mark is_automatic = false, manual_review = true, and either set node.type = "ManualTask" or assign a separate human subprocess (e.g., "human_approver").
+    - Bot permissions and responsibilities are expressed via node.pool and node.lane. Pools represent system boundaries (e.g., "SAP", "EmailSystem"); lanes represent roles or bot identities (e.g., "ProcurementBot", "FinanceBot", "HumanApprover").
+    - For tasks that are partly automated (human-in-the-loop), prefer "UserTask" or "Task" + mapping.manual_review = true.
+    - Create subprocess ids like "bot1", "bot2", "human1" when splitting the process across multiple bots/actors. Each bot should correspond to a meaningful subprocess that groups its tasks.
+    Rules:
+    - Output ONLY a single valid JSON object that strictly follows the GraphOutput schema below.
+    - Do NOT include explanations, comments, markdown, or extra fields.
+    - Entities are provided as a list of objects with: text, label, confidence (optional), start (optional), end (optional).
+    - Use ONLY these entity labels: Action, Object, Role, System, Event, DataField, Condition, Resource, Process, Output.
+    - Candidate activities are provided as a list of objects with: activity_id, pkg, keyword, score, confidence (optional).
+    - Use dependency parser info to infer relationships and task sequence.
+    - You do NOT need to use all candidates. You may ignore candidate activities that don't fit the text context. 
+    - Type BPMN supported: StartEvent, EndEvent, Task, ManualTask, UserTask, Gateway(Exclusive, Parallel).
+    - Ensure flows connect nodes logically based on process sequence Follow rule design bpmn process in BPMN 2.0,  e.g., upload must occur before send or email.
+
+    Required JSON output structure:
     {{
       "intent": {{"code": "string", "confidence": 0.0}},
-      "entities": [...], // class Entity(BaseModel):
-            label: EntityLabel // Label Follow EntityLabel = Literal["ACT","DOC","SYS","ROLE","ID"]
-            text: str
-            start: int
-            end: int
-      "relations": [{{"head":"...","tail":"...","type":"..."}}], //RelType = Literal["agent_of","exec_in","object_of","receiver_of","sequence_next"]
+      "relations": [
+        {{"head": "officer", "tail": "select menu", "type": "agent_of"}} // Literal["agent_of", "exec_in", "object_of", "receiver_of", "sequence_next", "condition_of", "use_of", "purpose_of", "result_of"]
+      ],
       "bpmn": {{
-        "nodes": [{{"id":"...","type":"Task|StartEvent|EndEvent","name":"..."}}],
-        "flows": [{{"source":"...","target":"...","type":"SequenceFlow"}}]
-      }}, // class BPMNNode(BaseModel):
-            id: str
-            type: NodeType  //NodeType = Literal["StartEvent","EndEvent","Task","ManualTask","UserTask","Gateway","DataObject"]
-            name: str
-            lane: Optional[str] = None
-            pool: Optional[str] = None
-            attributes: Dict[str, Any] = Field(default_factory=dict)
-
-            class BPMNFlow(BaseModel):
-                source: str
-                target: str
-                type: FlowType //FlowType = Literal["SequenceFlow","MessageFlow","DataAssociation"]
-      "mapping": [{{"node_id":"...","activity_id":"...","confidence":0.0,"manual_review":false, "candidates":[]}}]
-       // class Mapping(BaseModel):
-            node_id: str
-            activity_id: Optional[str] = None
-            confidence: Optional[float] = None
-            manual_review: bool = False
-            candidates: List[MappingCandidate] = Field(default_factory=list)
-            input_bindings: Dict[str, Any] = Field(default_factory=dict)
-            outputs: List[str] = Field(default_factory=list)
-          class MappingCandidate(BaseModel):
-            activity_id: str
-            score: float
-            confidence: Optional[float] = None
-            manual_review: bool = False
+        "nodes": [
+          {{"id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", " subprocess": ""}},
+          {{"id": "n2", "type": "Task", "name": "Select menu", "lane": "Officer", " subprocess": "bot1"}}
+          {{"id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway"}}
+        ],
+        "flows": [
+          {{"source": "n1", "target": "n2", "type": "SequenceFlow", "condition": ""}},
+          {{"source": "n2", "target": "n3", "type": "SequenceFlow"}}
+        ]
+      }},
+      "mapping": [
+        {{
+          "node_id": "n2",
+          "activity_id": "connect_to_sap_system",
+          "confidence": 0.92,
+          "manual_review": false,
+          "bot_id": "bot1",
+          "candidates": [
+            {{"activity_id": "connect_to_sap_system", "score": 0.8843, "confidence": 0.96, "pkg": "rpa-sap-mock", "keyword": "connect sap"}}
+          ],
+          "input_bindings": {{}},
+          "outputs": []
+        }}
+      ]
     }}
-    Text input: {text}
+
+    Input:
+    Entities: {entities}
+    Candidate Activities: {candidates}
+    Dependency Parser Info: {syntax_parser}
+    Text Input: {text}
+
+    Now produce ONLY the JSON output.
     """
+
+
 
     response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
     print("Token used in BPMN with mapping call:", response.usage_metadata)
@@ -112,17 +157,36 @@ def call_llm_bpmn_with_mapping(text: str, entities: List[Dict], candidates: List
 def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -> GraphOutput:
     model = genai.GenerativeModel(MODEL_BPMN)
     prompt = f"""
-    Given the text: {text}
+    You are a process modeling assistant in the context RPA. Generate a BPMN process model as JSON structure.
+    - rules:
+      - Do NOT include explanations, comments, markdown, or extra fields.
+      - Type BPMN supported: StartEvent, EndEvent, Task, ManualTask, UserTask, Gateway(Exclusive, Parallel).
+      - Ensure flows connect nodes logically based on process sequence Follow rule design bpmn process in BPMN 2.0  e.g., upload must occur before send or email, gateways split/join flows correctly.
+      - If a task is fully automatable by a bot, mark mapping.is_automatic = true and assign mapping.bot_id (e.g., "bot1"). If a task requires a human, mark is_automatic = false, manual_review = true, and either set node.type = "ManualTask" or assign a separate human subprocess (e.g., "human_approver").
+
+    Given the text user input context: {text}
     and entities: {entities}
     and relations: {relations}
+    Read and analyze the above context to
     Generate BPMN process model as JSON structure:
-    {{
+      {{
       "intent": {{"code": "string", "confidence": 0.0}},
+      "relations": [
+        {{"head": "officer", "tail": "select menu", "type": "agent_of"}} // Literal["agent_of", "exec_in", "object_of", "receiver_of", "sequence_next"]
+      ],
       "bpmn": {{
-        "nodes": [{{"id":"...","type":"...","name":"..."}}],
-        "flows": [{{"source":"...","target":"...","type":"..."}}]
-      }}
+        "nodes": [
+          {{"id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", " subprocess": ""}},
+          {{"id": "n2", "type": "Task", "name": "Select menu", "lane": "Officer", " subprocess": "bot1"}}
+          {{"id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway"}}
+        ],
+        "flows": [
+          {{"source": "n1", "target": "n2", "type": "SequenceFlow", "condition": ""}},
+          {{"source": "n2", "target": "n3", "type": "SequenceFlow"}}
+        ]
+      }},
     }}
+
     """
     response = model.generate_content(prompt, generation_config={"response_mime_type": "application/json"})
     import json

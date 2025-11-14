@@ -65,7 +65,6 @@ def try_draw(compiled_graph, basename: str):
             print(f"ℹ No draw_png/draw_svg methods for {basename} (Graphviz path or binding may be missing)")
     except Exception as e:
         print(f"⚠ Failed to draw PNG/SVG for {basename}: {e}")
-
 def main():
     ga = build_graph_a()  
     gb = build_graph_b()
@@ -85,8 +84,8 @@ def main():
         with open("app/tools/graph_b.png", "wb") as f:
             f.write(png_bytes)
         print("Saved graph_b.png")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Failed to save graph_b.png: {e}")
     # try_draw(ga, "scenario_a")
     # try_draw(gb, "scenario_b")
 

@@ -1,0 +1,34 @@
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="definitions_1">
+  <process id="Process_1" isExecutable="false">
+    <startEvent id="start_1" name="Start">
+      <outgoing>start_1-task_1</outgoing>
+      </startEvent>
+    <userTask id="task_1" name="Submit Request">
+      <incoming>start_1-task_1</incoming>
+      <outgoing>task_1-gateway_1</outgoing>
+      </userTask>
+    <exclusiveGateway id="gateway_1" name="Decide">
+      <incoming>task_1-gateway_1</incoming>
+      <outgoing>gateway_1-task_2</outgoing>
+      <outgoing>gateway_1-task_3</outgoing>
+      </exclusiveGateway>
+    <task id="task_2" name="Approve">
+      <incoming>gateway_1-task_2</incoming>
+      <outgoing>task_2-end_1</outgoing>
+      </task>
+    <task id="task_3" name="Reject">
+      <incoming>gateway_1-task_3</incoming>
+      <outgoing>task_3-end_1</outgoing>
+      </task>
+    <endEvent id="end_1" name="End">
+      <incoming>task_2-end_1</incoming>
+      <incoming>task_3-end_1</incoming>
+      </endEvent>
+    <sequenceFlow id="start_1-task_1" sourceRef="start_1" targetRef="task_1" />
+    <sequenceFlow id="task_1-gateway_1" sourceRef="task_1" targetRef="gateway_1" />
+    <sequenceFlow id="gateway_1-task_2" sourceRef="gateway_1" targetRef="task_2" name="approved" />
+    <sequenceFlow id="gateway_1-task_3" sourceRef="gateway_1" targetRef="task_3" name="rejected" />
+    <sequenceFlow id="task_2-end_1" sourceRef="task_2" targetRef="end_1" />
+    <sequenceFlow id="task_3-end_1" sourceRef="task_3" targetRef="end_1" />
+    </process>
+  </definitions>
