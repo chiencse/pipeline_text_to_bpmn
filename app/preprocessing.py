@@ -231,9 +231,9 @@ def node_preprocess(state: PipelineState = {},
     - Summarizes each chunk (extractive) using `summarizer` if provided else default heuristic
     - Caching: in-memory + optional disk shelve cache
     """
-    # raw = state.get("text", "") or ""
-    raw ="""After connecting to the SAP system, Email and Google Drive, The process get information of purchase from Email and checks if the purchase amount exceeds 5000 USD. If true, it creates a new Business Partner in SAP and sends a confirmation email to the requester. Otherwise, it uploads the purchase document to Google Drive for manual approval and notifies the finance team.
-""" 
+    raw = state.get("text", "") or ""
+#     raw ="""After connecting to the SAP system, Email and Google Drive, The process get information of purchase from Email and checks if the purchase amount exceeds 5000 USD. If true, it creates a new Business Partner in SAP and sends a confirmation email to the requester. Otherwise, it uploads the purchase document to Google Drive for manual approval and notifies the finance team.
+# """ 
     state["text"] = raw
     key = _cache_key(raw, max_len_chars, overlap_chars, preserve_case, remove_emojis)
     # try in-memory cache

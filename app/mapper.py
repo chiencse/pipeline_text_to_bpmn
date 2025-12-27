@@ -7,9 +7,9 @@ def mix_score(bm25: float|None, cosine_sim: float|None, rule_bonus: float=0.0) -
 
 def decide_mapping(score: float) -> Tuple[str, bool]:
     if score >= 0.75:
-        return ("ServiceTask", False)   # map chắc
-    if score >= 0.60:
-        return ("AdapterTask", True)    # cần review
+        return ("ServiceTask", True)   # map chắc
+    # if score >= 0.60:
+    #     return ("AdapterTask", True)    # cần review
     return ("ManualTask", False)        # không map
 
 def post_map_task(task: Dict, candidates: List[Dict], rule_bonus: float = 0.0) -> Dict:
@@ -28,9 +28,9 @@ def post_map_task(task: Dict, candidates: List[Dict], rule_bonus: float = 0.0) -
     t, rev = decide_mapping(best["score"])
     rec = {
         "node_id": task["id"],
-        "activity_id": best["activity_id"] if t == "ServiceTask" else None,
-        "confidence": best["score"] if t == "ServiceTask" else None,
-        "manual_review": rev,
+        "activity_id": best["activity_id"] ,
+        "confidence": best["score"],
+        "automatic": rev,
         "type": t,
         "candidates": [{"activity_id": c["activity_id"], "score": c["score"]} for c in candidates[:3]],
         "input_bindings": {},

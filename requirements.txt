@@ -1,6 +1,7 @@
 langchain
 langchain-community
 langchain-openai
+langchain-google-genai
 langgraph-cli[inmem]
 chromadb 
 sentence_transformers
@@ -15,4 +16,6 @@ uvicorn
 google-generativeai
 rich
 spacy
+psycopg2-binary
+python-dotenv
 

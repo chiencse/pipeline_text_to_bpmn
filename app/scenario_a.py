@@ -2,6 +2,7 @@ import math
 from typing import Any, Dict, List
 from langgraph.graph import StateGraph, END
 import numpy as np
+from pydantic import BaseModel
 from app.pos_dep import node_pos_dep
 from app.preprocessing import node_preprocess
 from app.state import PipelineState
@@ -9,6 +10,8 @@ from app.utils import simple_chunk
 from app.retrieval import _normalize, hybrid_search
 from app.validator import validate_bpmn
 from app.llm import call_llm_ner, call_llm_bpmn_with_mapping
+from app.bpmn_converter import render_bpmn_output
+from langgraph.types import Command, interrupt
 
 def _count_distinct_pkgs(entities: List[Dict[str, Any]]) -> int:
     pkgs = [e.get("pkg") for e in entities if e.get("pkg")]
@@ -187,8 +190,92 @@ def node_validate(state: PipelineState):
     return state
 
 def node_render(state: PipelineState):
+    """
+    Render node: Generate BPMN XML, activities, and variables from bpmn/mapping data.
+    Uses the bpmn_converter module (ported from json-to-bpmn-xml.util.ts).
+    
+    Output fields:
+    - render_xml: BPMN 2.0 XML string for visualization
+    - render_activities: List of activities with properties for RPA system
+    - render_variables: List of variables (placeholder for future)
+    - render_snapshot: Legacy snapshot for compatibility
+    """
+    bpmn = state.get("bpmn") or {}
+    mapping = state.get("mapping") or []
+    
+    # Call the converter to generate XML, activities, and variables
+    result = render_bpmn_output(bpmn, mapping)
+    
+    if result.get("success"):
+        state["render_xml"] = result.get("xml")
+        state["render_activities"] = result.get("activities") or []
+        state["render_variables"] = result.get("variables") or []
+    else:
+        # Store errors in meta if conversion failed
+        errors = result.get("errors") or []
+        state.setdefault("meta", {})["render_errors"] = errors
+        state["render_xml"] = None
+        state["render_activities"] = []
+        state["render_variables"] = []
+    
+    # Keep legacy render_snapshot for backward compatibility
+    state["render_snapshot"] = {
+        "bpmn": bpmn,
+        "mapping": mapping,
+        "meta": state.get("meta"),
+        "xml": state.get("render_xml"),
+        "activities": state.get("render_activities"),
+        "variables": state.get("render_variables"),
+    }
+    
     return state
 
+def apply_router(state: PipelineState):
+    v = state["user_decision"]
+    print("=== APPLY ROUTER ===" , v)
+    return "update" if v == "update" else "approve"
+def node_user_feedback(state: PipelineState):
+    print("=== USER FEEDBACK NODE ===")
+    # Nếu user_decision chưa có -> pause and surface payload to FE
+    if "user_decision" not in state or not state.get("user_decision"):
+        payload = {
+            "instruction": "Do you approve this action? Reply JSON: {'user_decision': 'approve'} or {'user_decision':'update','user_updated_text':'...'}",
+            "draft_snapshot": state.get("draft_snapshot", state.get("text", "Không có dữ liệu")),
+            "hint": "Approve or Update"
+        }
+        res = interrupt(payload)   
+        state["user_decision"] = res.get("user_decision")
+        state["user_updated_text"] = res.get("user_updated_text")
+
+    # After resume: runtime should have merged resume value into state (user_decision, user_updated_text)
+    # Defensive: ensure update_attempts key exists
+    state.setdefault("_user_update_attempts", 0)
+
+    # If user decided update, apply update logic
+    if state.get("user_decision") == "update":
+        state["_user_update_attempts"] += 1
+        MAX_ATTEMPTS = 5
+        new_text = state.get("user_updated_text")
+
+        if state["_user_update_attempts"] > MAX_ATTEMPTS:
+            state.setdefault("warnings", []).append("user update attempts exceeded; auto-approving")
+            state.setdefault("improvements", []).append({"action": "update_failed_max_attempts"})
+            state["user_decision"] = "approve"
+            state.pop("user_updated_text", None)
+        else:
+            if isinstance(new_text, str) and new_text.strip():
+                state["text"] = new_text
+                for k in ("chunks","entities","relations","bpmn","mapping","meta","render_snapshot","draft_snapshot"):
+                    state.pop(k, None)
+                state.setdefault("improvements", []).append({"action":"user_updated_text"})
+                state.pop("user_updated_text", None)
+
+    # After handling, optionally remove user_decision for cleanup OR leave it for router to read.
+    # If your router reads user_decision, keep it until router runs; you can have a cleanup node later to pop it.
+
+    return state
+class InputData(BaseModel):
+    text: str = "" # Raw input text describing the business process     
 def build_graph_a():
     g = StateGraph(PipelineState)
     g.add_node("preprocess", node_preprocess)
@@ -198,6 +285,7 @@ def build_graph_a():
     g.add_node("bpmn_map", node_bpmn_with_map)
     g.add_node("validate", node_validate)
     g.add_node("render", node_render)
+    g.add_node("user_feedback", node_user_feedback)
     g.set_entry_point("preprocess")
     g.add_edge("preprocess", "pos_dep")
     g.add_edge("pos_dep", "ner_llm")
@@ -205,7 +293,17 @@ def build_graph_a():
     g.add_edge("retrieve", "bpmn_map")
     g.add_edge("bpmn_map", "validate")
     g.add_edge("validate", "render")
-    g.add_edge("render", END)
+    g.add_edge("render", "user_feedback")
+
+    g.add_conditional_edges(
+        "user_feedback",
+        apply_router,
+        {
+            "update_all": "preprocess",
+            "approve": END
+        },
+    )
+    
     return g.compile()
 
 # Export a module-level compiled graph for langgraph dev

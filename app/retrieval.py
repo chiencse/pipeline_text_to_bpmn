@@ -238,6 +238,53 @@ def hybrid_search(query: str, k: int = 5,
 
     return out[:k]
 
+def get_control_and_data_manipulation_templates() -> Tuple[List[Dict], List[Dict]]:
+    """
+    Get control and data manipulation activity templates from Chroma vector store.
+    These are always included when retrieving candidates.
+    
+    Returns:
+        Tuple of (control_templates, data_manipulation_templates)
+    """
+    # Get all templates and filter by pkg
+    try:
+        all_results = VS._collection.get(include=["metadatas", "documents"])
+        all_docs = all_results.get("documents", []) or []
+        all_metas = all_results.get("metadatas", []) or []
+        
+        # Filter control templates
+        control_templates = []
+        for doc, meta in zip(all_docs, all_metas):
+            if meta and meta.get("pkg") == "control":
+                control_templates.append({
+                    "activity_id": meta.get("templateId"),
+                    "pkg": meta.get("pkg", "control"),
+                    "keyword": meta.get("keyword", ""),
+                    "requiredArgs": meta.get("requiredArgs", []),
+                    "score": 0.0,  # Will be scored by LLM
+                    "text": doc[:240] if doc else ""
+                })
+        
+        # Filter data_manipulation templates
+        data_manipulation_templates = []
+        for doc, meta in zip(all_docs, all_metas):
+            if meta and meta.get("pkg") == "data_manipulation":
+                data_manipulation_templates.append({
+                    "activity_id": meta.get("templateId"),
+                    "pkg": meta.get("pkg", "data_manipulation"),
+                    "keyword": meta.get("keyword", ""),
+                    "requiredArgs": meta.get("requiredArgs", []),
+                    "score": 0.0,
+                    "text": doc[:240] if doc else ""
+                })
+    except Exception as e:
+        print(f"⚠️ Error retrieving templates from Chroma: {e}")
+        # Fallback to empty lists if Chroma query fails
+        control_templates = []
+        data_manipulation_templates = []
+    
+    return control_templates, data_manipulation_templates
+
 # def build_query_from_entities(entities: List[Dict]) -> str:
 #     """
 #     Build a compact query string from extracted entities (preserve order + action-priority).

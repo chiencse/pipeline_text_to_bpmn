@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="Definitions_19b3b2d4dce"
+  targetNamespace="http://bpmn.io/schema/bpmn"
+  exporter="edu-rpa"
+  exporterVersion="1.0">
+
+  <bpmn:process id="Process_19b3b2d4dce" isExecutable="true">
+    <bpmn:startEvent id="S1" name="Process Start">
+      <bpmn:outgoing>Flow_S1_T1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:manualTask id="T1" name="Receive student answer sheets">
+      <bpmn:incoming>Flow_S1_T1</bpmn:incoming>
+      <bpmn:outgoing>Flow_T1_G1</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="G1" name="All sheets graded?">
+      <bpmn:incoming>Flow_T1_G1</bpmn:incoming>
+      <bpmn:incoming>Flow_T3_G1</bpmn:incoming>
+      <bpmn:outgoing>Flow_G1_T2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_G1_T4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="T2" name="Manually grade sheet">
+      <bpmn:incoming>Flow_G1_T2</bpmn:incoming>
+      <bpmn:incoming>Flow_G2_T2</bpmn:incoming>
+      <bpmn:outgoing>Flow_T2_T3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="T3" name="Count graded sheets">
+      <bpmn:incoming>Flow_T2_T3</bpmn:incoming>
+      <bpmn:outgoing>Flow_T3_G1</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:userTask id="T4" name="Calculate final marks">
+      <bpmn:incoming>Flow_G1_T4</bpmn:incoming>
+      <bpmn:outgoing>Flow_T4_T5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="T5" name="Create soft copy of final marks">
+      <bpmn:incoming>Flow_T4_T5</bpmn:incoming>
+      <bpmn:outgoing>Flow_T5_T6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="T6" name="Recheck all final marks">
+      <bpmn:incoming>Flow_T5_T6</bpmn:incoming>
+      <bpmn:outgoing>Flow_T6_G2</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="G2" name="Problems found?">
+      <bpmn:incoming>Flow_T6_G2</bpmn:incoming>
+      <bpmn:outgoing>Flow_G2_T2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_G2_T7</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="T7" name="Submit soft copy to portal">
+      <bpmn:incoming>Flow_G2_T7</bpmn:incoming>
+      <bpmn:outgoing>Flow_T7_T8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="T8" name="Print hard copy of final marks">
+      <bpmn:incoming>Flow_T7_T8</bpmn:incoming>
+      <bpmn:outgoing>Flow_T8_T9</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="T9" name="Submit hard copy of final marks">
+      <bpmn:incoming>Flow_T8_T9</bpmn:incoming>
+      <bpmn:outgoing>Flow_T9_G3</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="G3" name="More than 14 days since exam?">
+      <bpmn:incoming>Flow_T9_G3</bpmn:incoming>
+      <bpmn:outgoing>Flow_G3_T10</bpmn:outgoing>
+      <bpmn:outgoing>Flow_G3_E1</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:manualTask id="T10" name="Write explanation letter">
+      <bpmn:incoming>Flow_G3_T10</bpmn:incoming>
+      <bpmn:outgoing>Flow_T10_T11</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:manualTask id="T11" name="Submit explanation letter">
+      <bpmn:incoming>Flow_T10_T11</bpmn:incoming>
+      <bpmn:outgoing>Flow_T11_E1</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:endEvent id="E1" name="Process End">
+      <bpmn:incoming>Flow_T11_E1</bpmn:incoming>
+      <bpmn:incoming>Flow_G3_E1</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_S1_T1" sourceRef="S1" targetRef="T1" />
+    <bpmn:sequenceFlow id="Flow_T1_G1" sourceRef="T1" targetRef="G1" />
+    <bpmn:sequenceFlow id="Flow_G1_T2" sourceRef="G1" targetRef="T2" name="No, sheets remaining">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">No, sheets remaining</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T2_T3" sourceRef="T2" targetRef="T3" />
+    <bpmn:sequenceFlow id="Flow_T3_G1" sourceRef="T3" targetRef="G1" />
+    <bpmn:sequenceFlow id="Flow_G1_T4" sourceRef="G1" targetRef="T4" name="Yes, all sheets completed">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Yes, all sheets completed</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T4_T5" sourceRef="T4" targetRef="T5" />
+    <bpmn:sequenceFlow id="Flow_T5_T6" sourceRef="T5" targetRef="T6" />
+    <bpmn:sequenceFlow id="Flow_T6_G2" sourceRef="T6" targetRef="G2" />
+    <bpmn:sequenceFlow id="Flow_G2_T2" sourceRef="G2" targetRef="T2" name="Yes, problems found">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Yes, problems found</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_G2_T7" sourceRef="G2" targetRef="T7" name="No, no problems">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">No, no problems</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T7_T8" sourceRef="T7" targetRef="T8" />
+    <bpmn:sequenceFlow id="Flow_T8_T9" sourceRef="T8" targetRef="T9" />
+    <bpmn:sequenceFlow id="Flow_T9_G3" sourceRef="T9" targetRef="G3" />
+    <bpmn:sequenceFlow id="Flow_G3_T10" sourceRef="G3" targetRef="T10" name="Yes, &gt;14 days">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Yes, &gt;14 days</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_T10_T11" sourceRef="T10" targetRef="T11" />
+    <bpmn:sequenceFlow id="Flow_T11_E1" sourceRef="T11" targetRef="E1" />
+    <bpmn:sequenceFlow id="Flow_G3_E1" sourceRef="G3" targetRef="E1" name="No, not &gt;14 days">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">No, not &gt;14 days</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_19b3b2d4dce">
+    <bpmndi:BPMNPlane id="BPMNPlane_19b3b2d4dce" bpmnElement="Process_19b3b2d4dce">
+      <bpmndi:BPMNShape id="S1_di" bpmnElement="S1">
+        <dc:Bounds x="200" y="200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="190" y="241" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T1_di" bpmnElement="T1">
+        <dc:Bounds x="380" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G1_di" bpmnElement="G1">
+        <dc:Bounds x="560" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="550" y="255" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T2_di" bpmnElement="T2">
+        <dc:Bounds x="740" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T3_di" bpmnElement="T3">
+        <dc:Bounds x="920" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T4_di" bpmnElement="T4">
+        <dc:Bounds x="740" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T5_di" bpmnElement="T5">
+        <dc:Bounds x="920" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T6_di" bpmnElement="T6">
+        <dc:Bounds x="1100" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G2_di" bpmnElement="G2">
+        <dc:Bounds x="1280" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1270" y="255" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T7_di" bpmnElement="T7">
+        <dc:Bounds x="1460" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T8_di" bpmnElement="T8">
+        <dc:Bounds x="1640" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T9_di" bpmnElement="T9">
+        <dc:Bounds x="1820" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="G3_di" bpmnElement="G3">
+        <dc:Bounds x="2000" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1990" y="255" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T10_di" bpmnElement="T10">
+        <dc:Bounds x="2180" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="T11_di" bpmnElement="T11">
+        <dc:Bounds x="2360" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="E1_di" bpmnElement="E1">
+        <dc:Bounds x="2540" y="200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2530" y="241" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_S1_T1_di" bpmnElement="Flow_S1_T1">
+        <di:waypoint x="236" y="218" />
+        <di:waypoint x="380" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T1_G1_di" bpmnElement="Flow_T1_G1">
+        <di:waypoint x="480" y="240" />
+        <di:waypoint x="560" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_G1_T2_di" bpmnElement="Flow_G1_T2">
+        <di:waypoint x="610" y="225" />
+        <di:waypoint x="740" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="675" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T2_T3_di" bpmnElement="Flow_T2_T3">
+        <di:waypoint x="840" y="240" />
+        <di:waypoint x="920" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T3_G1_di" bpmnElement="Flow_T3_G1">
+        <di:waypoint x="1020" y="240" />
+        <di:waypoint x="520" y="240" />
+        <di:waypoint x="520" y="225" />
+        <di:waypoint x="560" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_G1_T4_di" bpmnElement="Flow_G1_T4">
+        <di:waypoint x="610" y="225" />
+        <di:waypoint x="650" y="225" />
+        <di:waypoint x="650" y="380" />
+        <di:waypoint x="740" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="675" y="288" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T4_T5_di" bpmnElement="Flow_T4_T5">
+        <di:waypoint x="840" y="380" />
+        <di:waypoint x="920" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T5_T6_di" bpmnElement="Flow_T5_T6">
+        <di:waypoint x="1020" y="380" />
+        <di:waypoint x="1060" y="380" />
+        <di:waypoint x="1060" y="240" />
+        <di:waypoint x="1100" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T6_G2_di" bpmnElement="Flow_T6_G2">
+        <di:waypoint x="1200" y="240" />
+        <di:waypoint x="1280" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_G2_T2_di" bpmnElement="Flow_G2_T2">
+        <di:waypoint x="1330" y="225" />
+        <di:waypoint x="1370" y="225" />
+        <di:waypoint x="1370" y="240" />
+        <di:waypoint x="740" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1035" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_G2_T7_di" bpmnElement="Flow_G2_T7">
+        <di:waypoint x="1330" y="225" />
+        <di:waypoint x="1460" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1395" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T7_T8_di" bpmnElement="Flow_T7_T8">
+        <di:waypoint x="1560" y="240" />
+        <di:waypoint x="1640" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T8_T9_di" bpmnElement="Flow_T8_T9">
+        <di:waypoint x="1740" y="240" />
+        <di:waypoint x="1820" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T9_G3_di" bpmnElement="Flow_T9_G3">
+        <di:waypoint x="1920" y="240" />
+        <di:waypoint x="2000" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_G3_T10_di" bpmnElement="Flow_G3_T10">
+        <di:waypoint x="2050" y="225" />
+        <di:waypoint x="2180" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2115" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T10_T11_di" bpmnElement="Flow_T10_T11">
+        <di:waypoint x="2280" y="240" />
+        <di:waypoint x="2360" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T11_E1_di" bpmnElement="Flow_T11_E1">
+        <di:waypoint x="2460" y="240" />
+        <di:waypoint x="2540" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_G3_E1_di" bpmnElement="Flow_G3_E1">
+        <di:waypoint x="2050" y="225" />
+        <di:waypoint x="2540" y="218" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2295" y="206" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

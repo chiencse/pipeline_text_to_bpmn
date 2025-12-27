@@ -64,14 +64,14 @@ graph_builder.add_edge("chatbot", END)
 graph = graph_builder.compile(checkpointer=memory)
 from IPython.display import Image, display
 
-# try:
-#     display(Image(graph.get_graph().draw_mermaid_png()))
-#     png_bytes = graph.get_graph().draw_mermaid_png()
-#     with open("graph.png", "wb") as f:
-#         f.write(png_bytes)
-#     print("Saved graph.png")
-# except Exception:
-#     pass
+try:
+    display(Image(graph.get_graph().draw_mermaid_png()))
+    png_bytes = graph.get_graph().draw_mermaid_png()
+    with open("graph.png", "wb") as f:
+        f.write(png_bytes)
+    print("Saved graph.png")
+except Exception:
+    pass
 
 def stream_graph_updates(user_input: str):
     for event in graph.stream({"messages": [{"role": "user", "content": user_input}]}):

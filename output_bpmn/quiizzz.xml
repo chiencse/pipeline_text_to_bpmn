@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="Definitions_19b3b49b09d"
+  targetNamespace="http://bpmn.io/schema/bpmn"
+  exporter="edu-rpa"
+  exporterVersion="1.0">
+
+  <bpmn:process id="Process_19b3b49b09d" isExecutable="true">
+    <bpmn:startEvent id="n1" name="Start Course Creation">
+      <bpmn:outgoing>Flow_n1_n2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:manualTask id="n2" name="Collect and analyze multiple-choice questions">
+      <bpmn:incoming>Flow_n1_n2</bpmn:incoming>
+      <bpmn:outgoing>Flow_n2_g1</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="g1" name="More quizzes needed?">
+      <bpmn:incoming>Flow_n2_g1</bpmn:incoming>
+      <bpmn:incoming>Flow_n3_g1</bpmn:incoming>
+      <bpmn:outgoing>Flow_g1_n3</bpmn:outgoing>
+      <bpmn:outgoing>Flow_g1_n4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="n3" name="Create Google Form quiz">
+      <bpmn:incoming>Flow_g1_n3</bpmn:incoming>
+      <bpmn:outgoing>Flow_n3_g1</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="n4" name="Create course in Classroom">
+      <bpmn:incoming>Flow_g1_n4</bpmn:incoming>
+      <bpmn:outgoing>Flow_n4_n5</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="n5" name="Upload quizzes to course">
+      <bpmn:incoming>Flow_n4_n5</bpmn:incoming>
+      <bpmn:outgoing>Flow_n5_n6</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:manualTask id="n6" name="Manually recheck quizzes and course">
+      <bpmn:incoming>Flow_n5_n6</bpmn:incoming>
+      <bpmn:outgoing>Flow_n6_g2</bpmn:outgoing>
+    </bpmn:manualTask>
+    <bpmn:exclusiveGateway id="g2" name="Problems found?">
+      <bpmn:incoming>Flow_n6_g2</bpmn:incoming>
+      <bpmn:outgoing>Flow_g2_n7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_g2_n8</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="n7" name="Revise course and quizzes">
+      <bpmn:incoming>Flow_g2_n7</bpmn:incoming>
+      <bpmn:outgoing>Flow_n7_n8</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="n8" name="Publish course and quizzes">
+      <bpmn:incoming>Flow_n7_n8</bpmn:incoming>
+      <bpmn:incoming>Flow_g2_n8</bpmn:incoming>
+      <bpmn:outgoing>Flow_n8_n9</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="n9" name="End Course Creation">
+      <bpmn:incoming>Flow_n8_n9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_n1_n2" sourceRef="n1" targetRef="n2" />
+    <bpmn:sequenceFlow id="Flow_n2_g1" sourceRef="n2" targetRef="g1" />
+    <bpmn:sequenceFlow id="Flow_g1_n3" sourceRef="g1" targetRef="n3" name="Yes, more quizzes needed">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Yes, more quizzes needed</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_n3_g1" sourceRef="n3" targetRef="g1" />
+    <bpmn:sequenceFlow id="Flow_g1_n4" sourceRef="g1" targetRef="n4" name="No, all quizzes created">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">No, all quizzes created</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_n4_n5" sourceRef="n4" targetRef="n5" />
+    <bpmn:sequenceFlow id="Flow_n5_n6" sourceRef="n5" targetRef="n6" />
+    <bpmn:sequenceFlow id="Flow_n6_g2" sourceRef="n6" targetRef="g2" />
+    <bpmn:sequenceFlow id="Flow_g2_n7" sourceRef="g2" targetRef="n7" name="Yes, problems found">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">Yes, problems found</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_n7_n8" sourceRef="n7" targetRef="n8" />
+    <bpmn:sequenceFlow id="Flow_g2_n8" sourceRef="g2" targetRef="n8" name="No, no problems">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">No, no problems</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_n8_n9" sourceRef="n8" targetRef="n9" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_19b3b49b09d">
+    <bpmndi:BPMNPlane id="BPMNPlane_19b3b49b09d" bpmnElement="Process_19b3b49b09d">
+      <bpmndi:BPMNShape id="n1_di" bpmnElement="n1">
+        <dc:Bounds x="200" y="200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="190" y="241" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n2_di" bpmnElement="n2">
+        <dc:Bounds x="380" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g1_di" bpmnElement="g1">
+        <dc:Bounds x="560" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="550" y="255" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n3_di" bpmnElement="n3">
+        <dc:Bounds x="740" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n4_di" bpmnElement="n4">
+        <dc:Bounds x="740" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n5_di" bpmnElement="n5">
+        <dc:Bounds x="920" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n6_di" bpmnElement="n6">
+        <dc:Bounds x="1100" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g2_di" bpmnElement="g2">
+        <dc:Bounds x="1280" y="200" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1270" y="255" width="70" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n7_di" bpmnElement="n7">
+        <dc:Bounds x="1460" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n8_di" bpmnElement="n8">
+        <dc:Bounds x="1640" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="n9_di" bpmnElement="n9">
+        <dc:Bounds x="1820" y="200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1810" y="241" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_n1_n2_di" bpmnElement="Flow_n1_n2">
+        <di:waypoint x="236" y="218" />
+        <di:waypoint x="380" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n2_g1_di" bpmnElement="Flow_n2_g1">
+        <di:waypoint x="480" y="240" />
+        <di:waypoint x="560" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_g1_n3_di" bpmnElement="Flow_g1_n3">
+        <di:waypoint x="610" y="225" />
+        <di:waypoint x="740" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="675" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n3_g1_di" bpmnElement="Flow_n3_g1">
+        <di:waypoint x="840" y="240" />
+        <di:waypoint x="520" y="240" />
+        <di:waypoint x="520" y="225" />
+        <di:waypoint x="560" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_g1_n4_di" bpmnElement="Flow_g1_n4">
+        <di:waypoint x="610" y="225" />
+        <di:waypoint x="650" y="225" />
+        <di:waypoint x="650" y="380" />
+        <di:waypoint x="740" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="675" y="288" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n4_n5_di" bpmnElement="Flow_n4_n5">
+        <di:waypoint x="840" y="380" />
+        <di:waypoint x="880" y="380" />
+        <di:waypoint x="880" y="240" />
+        <di:waypoint x="920" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n5_n6_di" bpmnElement="Flow_n5_n6">
+        <di:waypoint x="1020" y="240" />
+        <di:waypoint x="1100" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n6_g2_di" bpmnElement="Flow_n6_g2">
+        <di:waypoint x="1200" y="240" />
+        <di:waypoint x="1280" y="225" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_g2_n7_di" bpmnElement="Flow_g2_n7">
+        <di:waypoint x="1330" y="225" />
+        <di:waypoint x="1460" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1395" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n7_n8_di" bpmnElement="Flow_n7_n8">
+        <di:waypoint x="1560" y="240" />
+        <di:waypoint x="1640" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_g2_n8_di" bpmnElement="Flow_g2_n8">
+        <di:waypoint x="1330" y="225" />
+        <di:waypoint x="1640" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1485" y="218" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_n8_n9_di" bpmnElement="Flow_n8_n9">
+        <di:waypoint x="1740" y="240" />
+        <di:waypoint x="1820" y="218" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

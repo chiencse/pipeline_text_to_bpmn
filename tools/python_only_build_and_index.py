@@ -4,9 +4,9 @@ from pathlib import Path
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
-TS_FILE = Path("activity.ts")          # đổi nếu đặt tên khác
-OUT_JSON = Path("activity_tpl_docs.json")
-CHROMA_DIR = Path("../chroma_activity")
+TS_FILE = Path("tools/activity.ts")          # đổi nếu đặt tên khác
+OUT_JSON = Path("tools/activity_tpl_docs.json")
+CHROMA_DIR = Path("tools/chroma_activity")
 COLLECTION = "activity_pkg"
 EMB_MODEL = "intfloat/multilingual-e5-base"
 
@@ -67,22 +67,35 @@ def build_tpl_docs(activity_packages):
         templates = pkg.get("activityTemplates") or []
         for t in templates:
             template_id = t.get("templateId") or ""
-            keyword = t.get("keyword") or ""
-            t_display = t.get("displayName") or ""
-            t_desc = t.get("description") or ""
+            keyword = (t.get("keyword") or "").lower()
+            t_display = (t.get("displayName") or "").lower()
+            t_desc = (t.get("description") or "").lower()
             args = t.get("arguments") or {}
 
             # text pieces
+            if t_display == t_desc:
+                t_desc = ""
+            if t_display == keyword:
+                keyword = ""
+            if t_desc == keyword:
+                keyword = ""
+            if t_desc == t_display:
+                t_desc = ""
+            if keyword == t_display:
+                keyword = ""
+            if keyword == t_desc:
+                keyword = ""
             pieces = [pkg_display, t_display, t_desc, keyword]
             # map arguments: "key type keywordArg"
-            for k, v in args.items():
-                if not isinstance(v, dict):
-                    continue
-                arg_type = v.get("type", "")
-                kwarg = v.get("keywordArg", "")
-                pieces.append(f"{k} {arg_type} {kwarg}")
-
+            # for k, v in args.items():
+            #     if not isinstance(v, dict):
+            #         continue
+            #     arg_type = v.get("type", "")
+            #     kwarg = v.get("keywordArg", "")
+            #     pieces.append(f"{k} {arg_type} {kwarg}")
+            print("\n pieces:", pieces)
             text = " ".join(pieces).strip().lower()
+        
 
             # requiredArgs
             required_args = []
@@ -168,4 +181,5 @@ def query_sample(vs):
         print(" ", doc.page_content[:100], "...")
 
 if __name__ == "__main__":
-    query_sample(Chroma(collection_name=COLLECTION, persist_directory=str(CHROMA_DIR), embedding_function=HuggingFaceEmbeddings(model_name=EMB_MODEL)))
+    # query_sample(Chroma(collection_name=COLLECTION, persist_directory=str(CHROMA_DIR), embedding_function=HuggingFaceEmbeddings(model_name=EMB_MODEL)))
+    main()

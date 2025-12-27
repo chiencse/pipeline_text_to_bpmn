@@ -2,8 +2,8 @@
   {
     "templateId": "google_drive.set_up_connection",
     "pkg": "google_drive",
-    "text": "google drive setup drive connection set up drive connection for following task init drive connection connection.google drive token_file",
-    "keyword": "Init Drive",
+    "text": "google drive setup drive connection set up drive connection for following task init drive",
+    "keyword": "init drive",
     "requiredArgs": [
       {
         "name": "Connection",
@@ -15,8 +15,8 @@
   {
     "templateId": "drive.create_folder",
     "pkg": "google_drive",
-    "text": "google drive create folder create a google drive folder in a given directory create drive directory folder name string folder parent folder path string parent_folder",
-    "keyword": "Create Drive Directory",
+    "text": "google drive create folder create a google drive folder in a given directory create drive directory",
+    "keyword": "create drive directory",
     "requiredArgs": [
       {
         "name": "Folder name",
@@ -33,8 +33,8 @@
   {
     "templateId": "drive.dowload_files",
     "pkg": "google_drive",
-    "text": "google drive dowload files dowload files from drive folders download drive files folder name string source query string query",
-    "keyword": "Download Drive Files",
+    "text": "google drive dowload files dowload files from drive folders download drive files",
+    "keyword": "download drive files",
     "requiredArgs": [
       {
         "name": "Folder name",
@@ -51,8 +51,8 @@
   {
     "templateId": "drive.upload_file",
     "pkg": "google_drive",
-    "text": "google drive upload file upload a file from robot's file system to google drive upload drive file file name string filename folder path string folder overwrite boolean overwrite make folder boolean make_dir",
-    "keyword": "Upload Drive File",
+    "text": "google drive upload file upload a file from robot's file system to google drive upload drive file",
+    "keyword": "upload drive file",
     "requiredArgs": [
       {
         "name": "File name",
@@ -79,8 +79,8 @@
   {
     "templateId": "drive.get_file_list_in_folder",
     "pkg": "google_drive",
-    "text": "google drive get file list in folder get a list of files in a given folder in google drive search drive files folder path string source query string query",
-    "keyword": "Search Drive Files",
+    "text": "google drive get file list in folder get a list of files in a given folder in google drive search drive files",
+    "keyword": "search drive files",
     "requiredArgs": [
       {
         "name": "Folder Path",
@@ -97,8 +97,8 @@
   {
     "templateId": "drive.get_file_folder",
     "pkg": "google_drive",
-    "text": "google drive get a file/folder get a file/folder in google drive get drive file by id id string file_id",
-    "keyword": "Get Drive File By Id",
+    "text": "google drive get a file/folder get a file/folder in google drive get drive file by id",
+    "keyword": "get drive file by id",
     "requiredArgs": [
       {
         "name": "ID",
@@ -110,8 +110,8 @@
   {
     "templateId": "drive.delete_file_folder",
     "pkg": "google_drive",
-    "text": "google drive delete file/folder delete a file/folder in google drive delete drive file id string file_id",
-    "keyword": "Delete Drive File",
+    "text": "google drive delete file/folder delete a file/folder in google drive delete drive file",
+    "keyword": "delete drive file",
     "requiredArgs": [
       {
         "name": "ID",
@@ -123,8 +123,8 @@
   {
     "templateId": "drive.move_file_folder",
     "pkg": "google_drive",
-    "text": "google drive move file/folder move a file/folder to another folder in google drive move drive file source id string file_id destination folder path string target",
-    "keyword": "Move Drive File",
+    "text": "google drive move file/folder move a file/folder to another folder in google drive move drive file",
+    "keyword": "move drive file",
     "requiredArgs": [
       {
         "name": "Source ID",
@@ -141,8 +141,8 @@
   {
     "templateId": "drive.share_file_folder",
     "pkg": "google_drive",
-    "text": "google drive share a file/folder share a file/folder in google drive add drive share share type enum.sharetype share_type share with email email email permission enum.permission role id string file_id",
-    "keyword": "Add Drive Share",
+    "text": "google drive share a file/folder share a file/folder in google drive add drive share",
+    "keyword": "add drive share",
     "requiredArgs": [
       {
         "name": "Share Type",
@@ -169,8 +169,8 @@
   {
     "templateId": "gmail.set_up_connection",
     "pkg": "gmail",
-    "text": "gmail setup gmail connection set up gmail connection for following task init gmail connection connection.gmail token_file",
-    "keyword": "Init Gmail",
+    "text": "gmail setup gmail connection set up gmail connection for following task init gmail",
+    "keyword": "init gmail",
     "requiredArgs": [
       {
         "name": "Connection",
@@ -182,8 +182,8 @@
   {
     "templateId": "gmail.send_email",
     "pkg": "gmail",
-    "text": "gmail send email send an email to other people using gmail send message from string sender to email to subject string subject body string message_text",
-    "keyword": "Send Message",
+    "text": "gmail send email send an email to other people using gmail send message",
+    "keyword": "send message",
     "requiredArgs": [
       {
         "name": "From",
@@ -210,8 +210,8 @@
   {
     "templateId": "gmail.list_emails",
     "pkg": "gmail",
-    "text": "gmail get list emails list emails in a given folder in gmail list messages email folder path string label_ids user id string user_id query string query max number emails number max_results",
-    "keyword": "List Messages",
+    "text": "gmail get list emails list emails in a given folder in gmail list messages",
+    "keyword": "list messages",
     "requiredArgs": [
       {
         "name": "Email Folder Path",
@@ -238,8 +238,8 @@
   {
     "templateId": "google_sheets.set_up_connection",
     "pkg": "google_sheets",
-    "text": "google sheet setup google sheet connection set up google sheet connection for following task init sheets connection connection.google sheets token_file_path",
-    "keyword": "Init Sheets",
+    "text": "google sheet setup google sheet connection set up google sheet connection for following task init sheets",
+    "keyword": "init sheets",
     "requiredArgs": [
       {
         "name": "Connection",
@@ -251,8 +251,8 @@
   {
     "templateId": "sheet.create_spreadsheet",
     "pkg": "google_sheets",
-    "text": "google sheet create spreadsheet create spreadsheet in google sheet create spreadsheet spreadsheet name string title",
-    "keyword": "Create Spreadsheet",
+    "text": "google sheet create spreadsheet create spreadsheet in google sheet",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "SpreadSheet Name",
@@ -264,8 +264,8 @@
   {
     "templateId": "sheet.get_spreadsheet_by_id",
     "pkg": "google_sheets",
-    "text": "google sheet get spreadsheet by id get spreadsheet by id in google sheet get spreadsheet basic information spreadsheet id string spreadsheet_id",
-    "keyword": "Get Spreadsheet Basic Information",
+    "text": "google sheet get spreadsheet by id get spreadsheet by id in google sheet get spreadsheet basic information",
+    "keyword": "get spreadsheet basic information",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -277,8 +277,8 @@
   {
     "templateId": "sheet.add_sheet",
     "pkg": "google_sheets",
-    "text": "google sheet add sheet add sheet to a given spreadsheet in google sheet create sheet spreadsheet id string spreadsheet_id sheet name string sheet_name",
-    "keyword": "Create Sheet",
+    "text": "google sheet add sheet add sheet to a given spreadsheet in google sheet create sheet",
+    "keyword": "create sheet",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -295,8 +295,8 @@
   {
     "templateId": "sheet.delete_sheet",
     "pkg": "google_sheets",
-    "text": "google sheet delete sheet delete sheet from a given spreadsheet in google sheet delete sheet spreadsheet id string spreadsheet_id sheet name string sheet_name",
-    "keyword": "Delete Sheet",
+    "text": "google sheet delete sheet delete sheet from a given spreadsheet in google sheet",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -313,8 +313,8 @@
   {
     "templateId": "sheet.rename_sheet",
     "pkg": "google_sheets",
-    "text": "google sheet rename sheet rename sheet of a given spreadsheet in google sheet rename sheet spreadsheet id string spreadsheet_id old sheet name string sheet_name new sheet name string new_sheet_name",
-    "keyword": "Rename Sheet",
+    "text": "google sheet rename sheet rename sheet of a given spreadsheet in google sheet",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -336,8 +336,8 @@
   {
     "templateId": "sheet.write_data_to_sheet",
     "pkg": "google_sheets",
-    "text": "google sheet write data to sheet write data to sheet in a given spreadsheet in google sheet update sheet values spreadsheet id string spreadsheet_id sheet range string sheet_range content string values",
-    "keyword": "Update Sheet Values",
+    "text": "google sheet write data to sheet write data to sheet in a given spreadsheet in google sheet update sheet values",
+    "keyword": "update sheet values",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -359,8 +359,8 @@
   {
     "templateId": "sheet.read_data_from_sheet",
     "pkg": "google_sheets",
-    "text": "google sheet read data from sheet read data from sheet in a given spreadsheet in google sheet get sheet values spreadsheet id string spreadsheet_id sheet range string sheet_range",
-    "keyword": "Get Sheet Values",
+    "text": "google sheet read data from sheet read data from sheet in a given spreadsheet in google sheet get sheet values",
+    "keyword": "get sheet values",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -377,8 +377,8 @@
   {
     "templateId": "sheet.clear_data_from_sheet",
     "pkg": "google_sheets",
-    "text": "google sheet clear data from sheet clear data from sheet in a given spreadsheet in google sheet clear sheet values spreadsheet id string spreadsheet_id sheet range string sheet_range",
-    "keyword": "Clear Sheet Values",
+    "text": "google sheet clear data from sheet clear data from sheet in a given spreadsheet in google sheet clear sheet values",
+    "keyword": "clear sheet values",
     "requiredArgs": [
       {
         "name": "SpreadSheet ID",
@@ -395,8 +395,8 @@
   {
     "templateId": "google_classroom.set_up_connection",
     "pkg": "google_classroom",
-    "text": "google classroom setup google classroom connection set up google classroom connection for following task set up classroom connection librabry string  connection connection.google classroom token_file_path",
-    "keyword": "Set Up Classroom Connection",
+    "text": "google classroom setup google classroom connection set up google classroom connection for following task set up classroom connection",
+    "keyword": "set up classroom connection",
     "requiredArgs": [
       {
         "name": "Librabry",
@@ -413,8 +413,8 @@
   {
     "templateId": "create_course",
     "pkg": "google_classroom",
-    "text": "google classroom create course create new course for teacher create course course name string name teacher email string ownerid",
-    "keyword": "Create Course",
+    "text": "google classroom create course create new course for teacher",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course Name",
@@ -431,15 +431,15 @@
   {
     "templateId": "list_classrooms",
     "pkg": "google_classroom",
-    "text": "google classroom list classrooms list classrooms list classrooms",
-    "keyword": "List Classrooms",
+    "text": "google classroom list classrooms",
+    "keyword": "",
     "requiredArgs": []
   },
   {
     "templateId": "delete_course_by_id",
     "pkg": "google_classroom",
-    "text": "google classroom delete classroom delete classroom delete classroom course id string courseid",
-    "keyword": "Delete Classroom",
+    "text": "google classroom delete classroom",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -451,8 +451,8 @@
   {
     "templateId": "get_course_id_by_course_name",
     "pkg": "google_classroom",
-    "text": "google classroom get course id by course name get id of the course by course name get course id by course name course name string course_name",
-    "keyword": "Get Course ID By Course Name",
+    "text": "google classroom get course id by course name get id of the course by course name",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course Name",
@@ -464,8 +464,8 @@
   {
     "templateId": "invite_student_course",
     "pkg": "google_classroom",
-    "text": "google classroom invite students to classroom invite students to classroom invite students to classroom course id string courseid list of student emails list studentemails",
-    "keyword": "Invite Students To Classroom",
+    "text": "google classroom invite students to classroom",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -482,8 +482,8 @@
   {
     "templateId": "create_assignment",
     "pkg": "google_classroom",
-    "text": "google classroom create assignment create assignment in a course of google classroom create assignment course id string courseid assignment title string title assignment description string description assignment url list linkmaterials due date string duedate due time string duetime",
-    "keyword": "Create Assignment",
+    "text": "google classroom create assignment create assignment in a course of google classroom",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -520,8 +520,8 @@
   {
     "templateId": "create_quiz_classroom",
     "pkg": "google_classroom",
-    "text": "google classroom create quiz create quiz in a course of google classroom create quiz course id string courseid quiz title string title quiz description string description quiz url string quizurl max points number maxpoints due date (optional) string duedate due time (optional) string duetime",
-    "keyword": "Create Quiz",
+    "text": "google classroom create quiz create quiz in a course of google classroom",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -563,8 +563,8 @@
   {
     "templateId": "list_course_work",
     "pkg": "google_classroom",
-    "text": "google classroom list coursework list coursework list coursework course id string courseid",
-    "keyword": "List Coursework",
+    "text": "google classroom list coursework",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -576,8 +576,8 @@
   {
     "templateId": "get_coursework_id_by_title",
     "pkg": "google_classroom",
-    "text": "google classroom get coursework id by title get coursework id by title get coursework id by title course id string courseid course title string title",
-    "keyword": "Get Coursework ID By Title",
+    "text": "google classroom get coursework id by title",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -594,8 +594,8 @@
   {
     "templateId": "delete_coursework",
     "pkg": "google_classroom",
-    "text": "google classroom delete coursework delete coursework delete coursework course id string courseid coursework id string courseworkid",
-    "keyword": "Delete Coursework",
+    "text": "google classroom delete coursework",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -612,8 +612,8 @@
   {
     "templateId": "list_student_submissions",
     "pkg": "google_classroom",
-    "text": "google classroom list student submissions list student submissions list student submissions course id string courseid coursework id string courseworkid",
-    "keyword": "List Student Submissions",
+    "text": "google classroom list student submissions",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -630,8 +630,8 @@
   {
     "templateId": "get_submission_id_by_email",
     "pkg": "google_classroom",
-    "text": "google classroom get submission id by email get submission id by email get submission id by email course id string courseid coursework id string courseworkid student email string studentemail",
-    "keyword": "Get Submission ID By Email",
+    "text": "google classroom get submission id by email",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Course ID",
@@ -653,8 +653,8 @@
   {
     "templateId": "google_form.set_up_connection",
     "pkg": "google_form",
-    "text": "google form setup google form connection set up google form connection for following task set up form connection librabry string  connection connection.google form token_file_path",
-    "keyword": "Set Up Form Connection",
+    "text": "google form setup google form connection set up google form connection for following task set up form connection",
+    "keyword": "set up form connection",
     "requiredArgs": [
       {
         "name": "Librabry",
@@ -671,8 +671,8 @@
   {
     "templateId": "create_quiz_form",
     "pkg": "google_form",
-    "text": "google form create quiz form create quiz in google form create form form name string title",
-    "keyword": "Create Form",
+    "text": "google form create quiz form create quiz in google form create form",
+    "keyword": "create form",
     "requiredArgs": [
       {
         "name": "Form Name",
@@ -684,8 +684,8 @@
   {
     "templateId": "get_doc_id",
     "pkg": "google_form",
-    "text": "google form get google doc id from url get google doc id from url get google doc id url string url",
-    "keyword": "Get Google Doc ID",
+    "text": "google form get google doc id from url  get google doc id",
+    "keyword": "get google doc id",
     "requiredArgs": [
       {
         "name": "URL",
@@ -697,8 +697,8 @@
   {
     "templateId": "transfer_quiz",
     "pkg": "google_form",
-    "text": "google form transfer google doc to google transfer quiz from google doc to google form add questions and answers from google doc to form docid string doc_id formid string form_id",
-    "keyword": "Add Questions And Answers From Google Doc To Form",
+    "text": "google form transfer google doc to google transfer quiz from google doc to google form add questions and answers from google doc to form",
+    "keyword": "add questions and answers from google doc to form",
     "requiredArgs": [
       {
         "name": "DocID",
@@ -715,7 +715,7 @@
   {
     "templateId": "if",
     "pkg": "control",
-    "text": "control if/else if a condition is met, then execute a set of activities, otherwise execute another set of activities  condition list.condition",
+    "text": "control if/else if a condition is met, then execute a set of activities, otherwise execute another set of activities",
     "keyword": "",
     "requiredArgs": [
       {
@@ -728,7 +728,7 @@
   {
     "templateId": "for_each",
     "pkg": "control",
-    "text": "control for each execute a set of activities for each item in a list  looptype string  item string  list list",
+    "text": "control for each execute a set of activities for each item in a list",
     "keyword": "",
     "requiredArgs": [
       {
@@ -751,7 +751,7 @@
   {
     "templateId": "for_range",
     "pkg": "control",
-    "text": "control for value in range execute a set of activities for each item in range  looptype string  item string  start number  end number",
+    "text": "control for value in range execute a set of activities for each item in range",
     "keyword": "",
     "requiredArgs": [
       {
@@ -779,8 +779,8 @@
   {
     "templateId": "set_variable",
     "pkg": "data_manipulation",
-    "text": "data manipulation set variable set the value of a variable set variable variable variable variable value any value",
-    "keyword": "Set Variable",
+    "text": "data manipulation set variable set the value of a variable",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Variable",
@@ -797,8 +797,8 @@
   {
     "templateId": "add_to_list",
     "pkg": "data_manipulation",
-    "text": "data manipulation add to list add an item to a list append to list list list  item any",
-    "keyword": "Append To List",
+    "text": "data manipulation add to list add an item to a list append to list",
+    "keyword": "append to list",
     "requiredArgs": [
       {
         "name": "List",
@@ -815,8 +815,8 @@
   {
     "templateId": "remove_from_list",
     "pkg": "data_manipulation",
-    "text": "data manipulation remove from list remove an item from a list remove from list list list list item any item",
-    "keyword": "Remove From List",
+    "text": "data manipulation remove from list remove an item from a list",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "List",
@@ -833,8 +833,8 @@
   {
     "templateId": "clear_list",
     "pkg": "data_manipulation",
-    "text": "data manipulation clear list clear all items in a list clear list list list list",
-    "keyword": "Clear List",
+    "text": "data manipulation clear list clear all items in a list",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "List",
@@ -846,8 +846,8 @@
   {
     "templateId": "go_to_url",
     "pkg": "browser_automation",
-    "text": "browser automation go to url go to a given url in the current browser tab go to url string url",
-    "keyword": "Go To",
+    "text": "browser automation go to url go to a given url in the current browser tab go to",
+    "keyword": "go to",
     "requiredArgs": [
       {
         "name": "URL",
@@ -859,8 +859,8 @@
   {
     "templateId": "click",
     "pkg": "browser_automation",
-    "text": "browser automation click click on a given element in the current browser tab click element string selector",
-    "keyword": "Click",
+    "text": "browser automation click click on a given element in the current browser tab",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Element",
@@ -872,8 +872,8 @@
   {
     "templateId": "type",
     "pkg": "browser_automation",
-    "text": "browser automation type into type a given text into a given element in the current browser tab fill text element string selector text string txt",
-    "keyword": "Fill Text",
+    "text": "browser automation type into type a given text into a given element in the current browser tab fill text",
+    "keyword": "fill text",
     "requiredArgs": [
       {
         "name": "Element",
@@ -890,8 +890,8 @@
   {
     "templateId": "get_text",
     "pkg": "browser_automation",
-    "text": "browser automation get text get the text of a given element in the current browser tab get text element string selector",
-    "keyword": "Get Text",
+    "text": "browser automation get text get the text of a given element in the current browser tab",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Element",
@@ -903,8 +903,8 @@
   {
     "templateId": "extract_data_from_document",
     "pkg": "document_automation",
-    "text": "document automation extract data from document extract data from a document using document template extract data from document document string file_name document template documenttemplate template",
-    "keyword": "Extract Data From Document",
+    "text": "document automation extract data from document extract data from a document using document template",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Document",
@@ -921,8 +921,8 @@
   {
     "templateId": "generate_grade_report",
     "pkg": "document_automation",
-    "text": "document automation generate grade report generate a grade report from a list of extracted data create grade report file actual answers list actual_answers correct answer dictionary correct_answer names list file_names",
-    "keyword": "Create Grade Report File",
+    "text": "document automation generate grade report generate a grade report from a list of extracted data create grade report file",
+    "keyword": "create grade report file",
     "requiredArgs": [
       {
         "name": "Actual answers",
@@ -944,8 +944,8 @@
   {
     "templateId": "upload_file",
     "pkg": "file_storage",
-    "text": "file storage upload file upload a file to the platform's file storage upload file file string file file name string file_name folder path string folder_path",
-    "keyword": "Upload File",
+    "text": "file storage upload file upload a file to the platform's file storage",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "File",
@@ -967,8 +967,8 @@
   {
     "templateId": "download_file",
     "pkg": "file_storage",
-    "text": "file storage download file download a file from the platform's file storage download file file path string file_path file name string file_name",
-    "keyword": "Download File",
+    "text": "file storage download file download a file from the platform's file storage",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "File path",
@@ -985,8 +985,8 @@
   {
     "templateId": "connect_to_sap_system",
     "pkg": "rpa-sap-mock",
-    "text": "sap mock connect to sap system connect to the sap system using a base url and token file connect to sap system base url string base_url token file path connection.sap mock token_file_path verify ssl boolean verify_ssl",
-    "keyword": "Connect To SAP System",
+    "text": "sap mock connect to sap system connect to the sap system using a base url and token file",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Base URL",
@@ -1008,8 +1008,8 @@
   {
     "templateId": "get_business_partner",
     "pkg": "rpa-sap-mock",
-    "text": "sap mock get business partner retrieve a business partner by id from the sap system get business partner by id partner id string partner_id",
-    "keyword": "Get Business Partner By ID",
+    "text": "sap mock get business partner retrieve a business partner by id from the sap system get business partner by id",
+    "keyword": "get business partner by id",
     "requiredArgs": [
       {
         "name": "Partner ID",
@@ -1021,8 +1021,8 @@
   {
     "templateId": "create_business_partner_address",
     "pkg": "rpa-sap-mock",
-    "text": "sap mock create business partner address create a new address for a business partner in the sap system create business partner address partner id string partner_id json data string json_data",
-    "keyword": "Create Business Partner Address",
+    "text": "sap mock create business partner address create a new address for a business partner in the sap system",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Partner ID",
@@ -1039,8 +1039,8 @@
   {
     "templateId": "update_business_partner_address",
     "pkg": "rpa-sap-mock",
-    "text": "sap mock update business partner address update an existing address for a business partner in the sap system update business partner address partner id string partner_id address id string address_id json data string json_data",
-    "keyword": "Update Business Partner Address",
+    "text": "sap mock update business partner address update an existing address for a business partner in the sap system",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Partner ID",
@@ -1062,8 +1062,8 @@
   {
     "templateId": "delete_business_partner_address",
     "pkg": "rpa-sap-mock",
-    "text": "sap mock delete business partner address delete an address for a business partner in the sap system delete business partner address partner id string partner_id address id string address_id",
-    "keyword": "Delete Business Partner Address",
+    "text": "sap mock delete business partner address delete an address for a business partner in the sap system",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Partner ID",
