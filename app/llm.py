@@ -232,7 +232,8 @@ def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -
     prompt = f"""
     You are a process modeling assistant in the context RPA. Your goal is to convert natural language process descriptions into a strict JSON structure representing a BPMN diagram.
    ### RULES & CONSTRAINTS:
-    1. **Output Format**: Return ONLY valid JSON. Do not include markdown formatting (```json), comments, or explanations.
+    1. **Output Format**: Return ONLY valid JSON. Do not include markdown formatting (```json), comments, or explanations. 
+       - "queryActivity" is the string query(name/keyword + description + contextPackage) should use to get the retrieval similar activities(Education Moodle, Email, Google Sheet, Google Drive, Control, ...)
     2. **Lane/Actor Identification**: Identify the actor performing each step. Assign them to the "lane" field.
     3. **Node Type Selection Guidelines**: - Inspect all cases and select the most appropriate node type,  can base on keyword of user input.
         - **StartEvent/EndEvent**: Marking the beginning and completion of the flow. Only one start/end event is allowed.
@@ -252,28 +253,28 @@ def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -
         - Handle loops by connecting a SequenceFlow back to a previous Gateway or Task. if the task is in a loop, set "in_loop": true.
 
     Given the text user input context: {text}
-    and entities: {entities}
+
  
     Read and analyze the above context to
     Generate BPMN process model as JSON structure:
       {{
       "intent": {{"code": "string", "confidence": 0.0}},
-      "relations": [
-        {{"head": "officer", "tail": "select menu", "type": "agent_of"}} // Literal["agent_of", "exec_in", "object_of", "receiver_of", "sequence_next"]
-      ],
       "bpmn": {{
         "nodes": [
-          {{"id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", "in_loop": boolean, "automation": {{
+          {{"queryActivity": "send email to officer",
+            "id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", "in_loop": boolean, "automation": {{
             "is_automatic": boolean, 
             "bot_id": "string or null",
             "manual_review_required": boolean
         }}}},
-          {{"id": "n2", "type": "Task", "name": "Select menu", "lane": "Officer", "in_loop": boolean, "automation": {{
+          {{
+            "queryActivity": "create google sheet",
+            "id": "n2", "type": "Task", "name": "Select menu", "lane": "Officer", "in_loop": boolean, "automation": {{
             "is_automatic": boolean, 
             "bot_id": "bot1",
             "manual_review_required": boolean
         }}}},
-          {{"id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway", "in_loop": boolean}}
+          {{"queryActivity": "if/else loop condition for count", "id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway", "in_loop": boolean}}
         ],
         "flows": [
           {{"source": "n1", "target": "n2", "type": "SequenceFlow", "condition": "string (only for flows coming out of ExclusiveGateway)"}},
@@ -372,10 +373,6 @@ def call_llm_bpmn_with_feedback(
     
     **Required JSON output structure:**
     {{
-      "intent": {{"code": "string", "confidence": 0.0}},
-      "relations": [
-        {{"head": "officer", "tail": "select menu", "type": "agent_of"}}
-      ],
       "bpmn": {{
         "nodes": [
           {{"id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", "subprocess": ""}},
@@ -503,26 +500,33 @@ def call_llm_mapping_with_feedback(
     **Original Input:**
     Text: {original_text}
     
-    **Output Format:**
-    Return ONLY a valid JSON array of mapping objects. Each object should have:
-    {{
-      "node_id": "string (required)",
-      "activity_id": "string or null",
-      "confidence": float (0.0-1.0),
-      "manual_review": boolean,
-      "bot_id": "string or null",
-      "candidates": [
-        {{
-          "activity_id": "string",
-          "score": float,
-          "confidence": float,
-          "pkg": "string",
-          "keyword": "string"
-        }}
-      ],
-      "input_bindings": {{}},
-      "outputs": []
-    }}
+**Output Format:**
+Return ONLY a valid JSON array. Each object should have:
+{{
+  "node_id": "string (required)",
+  "is_automatic": boolean,
+  "confidence": float (0.0-1.0),
+  "selected_activity_id": "string or null",
+  "reasoning": "string (brief explanation)",
+}}
+Example output:
+[
+  {{
+    "node_id": "n1",
+    "is_automatic": true,
+    "confidence": 0.85,
+    "selected_activity_id": "send_email_gmail",
+    "reasoning": "Strong match with Gmail send activity. Task involves sending email which is fully automatable.",
+  }},
+  {{
+    "node_id": "n2",
+    "is_automatic": false,
+    "confidence": 0.2,
+    "selected_activity_id": null,
+    "reasoning": "Task requires human judgment and approval. No suitable automation candidates.",
+  }}
+]
+
     
     Include ALL nodes from current mapping, but update only those mentioned in feedback or in selected_node_ids.
     
@@ -654,6 +658,7 @@ Considering all candidates, even those with high scores may not be suitable for 
 1. **Automation Feasibility**: Can this task be fully automated by an RPA bot?
  A task is considered AUTOMATABLE if:
 - If a node has "in_loop": true, automation is strongly preferred.
+- If a node has activiy can call/execute on the system, automation is strongly preferred.
 - It belongs to common Education RPA scenarios:
   - Creating, uploading, updating, deleting, or actions to Education entities like courses, classes, students, teachers, etc.
   - Grading or calculating final marks (grading does NOT require a document template)
@@ -665,11 +670,11 @@ Considering all candidates, even those with high scores may not be suitable for 
 A task is considered NOT AUTOMATABLE if:
 - It requires human judgment, subjective interpretation, creativity, or asking questions.
 - It involves physical-world actions.
-- No suitable activity exists and the task meaning implies human involvement
+- not potentially automatable or no suitable activity exists and the task meaning implies human involvement.
   (except generic education control or data manipulation tasks).
 
 **Important Rules:**
-- Do NOT try to map every node. Select at most ONE suitable activity template candidate(with education grading assign "OCR"). Only evaluate nodes that have meaningful candidates
+- Do NOT try to map every node. Select at most ONE suitable activity template candidate(with education grading assign "OCR")
 - Gateway nodes with Question cannot calculate to compare so we cannot automate this task.
 - ManualTask and UserTask types generally indicate human involvement - evaluate carefully.
 

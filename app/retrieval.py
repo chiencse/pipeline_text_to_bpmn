@@ -10,7 +10,7 @@ from functools import lru_cache
 # ---- Vector store (giữ nguyên)
 emb = HuggingFaceEmbeddings(model_name="intfloat/multilingual-e5-base")
 VS = Chroma(collection_name="activity_pkg",
-            persist_directory="./chroma_activity",
+            persist_directory="chroma_activity",
             embedding_function=emb)
 
 # ---- BM25 setup (in-memory)
@@ -85,14 +85,18 @@ def _rule_bonus(query: str, meta: Dict) -> float:
         "google_sheets": ["sheets", "google sheet", "spreadsheet"],
         "google_classroom": ["classroom", "gclassroom"],
         "google_form": ["google form", "form"],
+        "control": ["control", "if", "else", "loop", "for each", "condition"],
+        "data_manipulation": ["data", "variable", "list", "set variable", "append"],
         "browser_automation": ["browser", "chrome", "web", "playwright"],
-        "file_storage": ["storage", "file storage"],
         "document_automation": ["document", "ocr", "pdf"],
-        "rpa-sap-mock": ["sap", "business partner", "s4hana"]
+        "file_storage": ["storage", "file storage"],
+        "rpa-sap-mock": ["sap", "business partner", "s4hana"],
+        "rpa-erpnext": ["erpnext", "erp", "material request", "purchase order", "rfq"],
+        "moodle": ["moodle", "course", "quiz", "grade", "student", "assignment", "enrollment"]
     }
     for k, hints in aliases.items():
         if pkg == k and any(h in q for h in hints):
-            bonus += 0.1
+            bonus += 0.2
             break
 
     # 3) required args overlap
@@ -112,11 +116,11 @@ def _rule_bonus(query: str, meta: Dict) -> float:
     # giới hạn tối đa 2 arg để tránh bơm quá tay
     bonus += min(0.05 * len(set(arg_names)), 0.10)
 
-    return min(bonus, 0.30)
+    return min(bonus, 1)
 
 def hybrid_search(query: str, k: int = 5,
-                  w_bm25: float = 0.4,
-                  w_vec: float = 0.5,
+                  w_bm25: float = 0.3,
+                  w_vec: float = 0.6,
                   w_rule: float = 0.1) -> List[Dict]:
     """
     Hybrid search:

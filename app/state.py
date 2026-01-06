@@ -11,6 +11,7 @@ class CheckpointModel(BaseModel):
     snapshot: Dict[str, Any] = Field(default_factory=dict)
     note: Optional[str] = None
 class PipelineState(TypedDict, total=False):
+    thread_id: str
     text: str
     chunks: List[str]
     preprocess: Dict[str, Any]

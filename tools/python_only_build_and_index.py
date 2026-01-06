@@ -6,7 +6,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 
 TS_FILE = Path("tools/activity.ts")          # đổi nếu đặt tên khác
 OUT_JSON = Path("tools/activity_tpl_docs.json")
-CHROMA_DIR = Path("tools/chroma_activity")
+CHROMA_DIR = Path("chroma_activity")
 COLLECTION = "activity_pkg"
 EMB_MODEL = "intfloat/multilingual-e5-base"
 

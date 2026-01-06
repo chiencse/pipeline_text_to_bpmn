@@ -944,8 +944,8 @@
   {
     "templateId": "upload_file",
     "pkg": "file_storage",
-    "text": "file storage upload file upload a file to the platform's file storage",
-    "keyword": "",
+    "text": "file storage upload file upload a file to the platform's file storage upload drive file",
+    "keyword": "upload drive file",
     "requiredArgs": [
       {
         "name": "File",
@@ -1074,6 +1074,1130 @@
         "name": "Address ID",
         "type": "string",
         "keywordArg": "address_id"
+      }
+    ]
+  },
+  {
+    "templateId": "connect_to_erpnext",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext connect to erpnext connect to erpnext using a base url and api token",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Base URL",
+        "type": "string",
+        "keywordArg": "base_url"
+      },
+      {
+        "name": "Token File Path",
+        "type": "connection.ERPNext",
+        "keywordArg": "token_file_path"
+      },
+      {
+        "name": "Verify SSL",
+        "type": "boolean",
+        "keywordArg": "verify_ssl"
+      }
+    ]
+  },
+  {
+    "templateId": "ensure_item_exists",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext ensure item exists check if an item exists in erpnext; if not, create one automatically. ensure erp item exists",
+    "keyword": "ensure erp item exists",
+    "requiredArgs": [
+      {
+        "name": "Item Code",
+        "type": "string",
+        "keywordArg": "item_code"
+      },
+      {
+        "name": "Item Name",
+        "type": "string",
+        "keywordArg": "item_name"
+      },
+      {
+        "name": "Unit of Measure",
+        "type": "string",
+        "keywordArg": "uom"
+      }
+    ]
+  },
+  {
+    "templateId": "create_material_request",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create material request create a material request document in erpnext with multiple items. create erp material request",
+    "keyword": "create erp material request",
+    "requiredArgs": [
+      {
+        "name": "Items",
+        "type": "list",
+        "keywordArg": "items"
+      }
+    ]
+  },
+  {
+    "templateId": "create_request_for_quotation",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create request for quotation (rfq) create an rfq in erpnext for one or more suppliers. create erp rfq",
+    "keyword": "create erp rfq",
+    "requiredArgs": [
+      {
+        "name": "Items",
+        "type": "list",
+        "keywordArg": "items"
+      },
+      {
+        "name": "Suppliers",
+        "type": "list",
+        "keywordArg": "suppliers"
+      },
+      {
+        "name": "Message For Supplier",
+        "type": "string",
+        "keywordArg": "message_for_supplier"
+      }
+    ]
+  },
+  {
+    "templateId": "create_purchase_order",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create purchase order create a purchase order document in erpnext for a supplier. create erp purchase order",
+    "keyword": "create erp purchase order",
+    "requiredArgs": [
+      {
+        "name": "Supplier",
+        "type": "string",
+        "keywordArg": "supplier"
+      },
+      {
+        "name": "Items",
+        "type": "list",
+        "keywordArg": "items"
+      },
+      {
+        "name": "Default Rate",
+        "type": "number",
+        "keywordArg": "default_rate"
+      }
+    ]
+  },
+  {
+    "templateId": "submit_erp_document",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext submit erp document submit an existing erpnext document (material request, rfq, or purchase order).",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "DocType",
+        "type": "string",
+        "keywordArg": "doctype"
+      },
+      {
+        "name": "Document ID",
+        "type": "string",
+        "keywordArg": "name"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.setup_connection",
+    "pkg": "moodle",
+    "text": "moodle setup moodle connection set up moodle connection for following tasks set up moodle connection",
+    "keyword": "set up moodle connection",
+    "requiredArgs": [
+      {
+        "name": "Connection",
+        "type": "connection.Moodle",
+        "keywordArg": "token_file_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.setup_google_connection",
+    "pkg": "moodle",
+    "text": "moodle setup google docs connection setup google api connection for google docs integration setup google connection",
+    "keyword": "setup google connection",
+    "requiredArgs": [
+      {
+        "name": "Connection",
+        "type": "connection.Google Drive",
+        "keywordArg": "token_file_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_categories",
+    "pkg": "moodle",
+    "text": "moodle get course categories get list of all course categories",
+    "keyword": "",
+    "requiredArgs": []
+  },
+  {
+    "templateId": "moodle.create_course_category",
+    "pkg": "moodle",
+    "text": "moodle create course category create a new course category",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Name",
+        "type": "string",
+        "keywordArg": "name"
+      },
+      {
+        "name": "Parent",
+        "type": "number",
+        "keywordArg": "parent"
+      },
+      {
+        "name": "Description",
+        "type": "string",
+        "keywordArg": "description"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.ensure_category_exists",
+    "pkg": "moodle",
+    "text": "moodle ensure category exists ensure category exists, create if not found",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Name",
+        "type": "string",
+        "keywordArg": "name"
+      },
+      {
+        "name": "Parent",
+        "type": "number",
+        "keywordArg": "parent"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.create_course",
+    "pkg": "moodle",
+    "text": "moodle create course create a new course in moodle",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Fullname",
+        "type": "string",
+        "keywordArg": "fullname"
+      },
+      {
+        "name": "Shortname",
+        "type": "string",
+        "keywordArg": "shortname"
+      },
+      {
+        "name": "Category ID",
+        "type": "number",
+        "keywordArg": "categoryid"
+      },
+      {
+        "name": "Summary",
+        "type": "string",
+        "keywordArg": "summary"
+      },
+      {
+        "name": "Format",
+        "type": "string",
+        "keywordArg": "format"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_by_shortname",
+    "pkg": "moodle",
+    "text": "moodle get course by shortname get course information by shortname",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Shortname",
+        "type": "string",
+        "keywordArg": "shortname"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.ensure_course_exists",
+    "pkg": "moodle",
+    "text": "moodle ensure course exists ensure course exists, create if not found",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Fullname",
+        "type": "string",
+        "keywordArg": "fullname"
+      },
+      {
+        "name": "Shortname",
+        "type": "string",
+        "keywordArg": "shortname"
+      },
+      {
+        "name": "Category ID",
+        "type": "number",
+        "keywordArg": "categoryid"
+      },
+      {
+        "name": "Summary",
+        "type": "string",
+        "keywordArg": "summary"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_contents",
+    "pkg": "moodle",
+    "text": "moodle get course contents get contents of a course",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "courseid"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.generate_quiz_gift_file",
+    "pkg": "moodle",
+    "text": "moodle generate quiz gift file generate gift format file for moodle quiz import",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Questions",
+        "type": "list",
+        "keywordArg": "questions"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.generate_quiz_xml_file",
+    "pkg": "moodle",
+    "text": "moodle generate quiz xml file generate moodle xml format file for quiz import",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Questions",
+        "type": "list",
+        "keywordArg": "questions"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      },
+      {
+        "name": "Quiz Name",
+        "type": "string",
+        "keywordArg": "quiz_name"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.create_user",
+    "pkg": "moodle",
+    "text": "moodle create user create a new user in moodle",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Username",
+        "type": "string",
+        "keywordArg": "username"
+      },
+      {
+        "name": "Password",
+        "type": "string",
+        "keywordArg": "password"
+      },
+      {
+        "name": "Firstname",
+        "type": "string",
+        "keywordArg": "firstname"
+      },
+      {
+        "name": "Lastname",
+        "type": "string",
+        "keywordArg": "lastname"
+      },
+      {
+        "name": "Email",
+        "type": "email",
+        "keywordArg": "email"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.enroll_user_in_course",
+    "pkg": "moodle",
+    "text": "moodle enroll user in course enroll a user in a course",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "User ID",
+        "type": "number",
+        "keywordArg": "userid"
+      },
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "courseid"
+      },
+      {
+        "name": "Role ID",
+        "type": "number",
+        "keywordArg": "roleid"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.enrol_user",
+    "pkg": "moodle",
+    "text": "moodle enrol user enrol user by username and course shortname",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Username",
+        "type": "string",
+        "keywordArg": "username"
+      },
+      {
+        "name": "Course Shortname",
+        "type": "string",
+        "keywordArg": "course_shortname"
+      },
+      {
+        "name": "Role ID",
+        "type": "number",
+        "keywordArg": "roleid"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_drive_file_id_from_url",
+    "pkg": "moodle",
+    "text": "moodle get google drive file id from url extract file id from google drive/sheets/docs url",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "URL",
+        "type": "string",
+        "keywordArg": "url"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.read_google_doc_content",
+    "pkg": "moodle",
+    "text": "moodle read google doc content read text content from google docs",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doc ID",
+        "type": "string",
+        "keywordArg": "doc_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.read_quiz_from_google_doc",
+    "pkg": "moodle",
+    "text": "moodle read quiz from google doc parse quiz questions and answers from google doc",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doc ID",
+        "type": "string",
+        "keywordArg": "doc_id"
+      },
+      {
+        "name": "Delimiter",
+        "type": "string",
+        "keywordArg": "delimiter"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.create_quiz_from_google_doc",
+    "pkg": "moodle",
+    "text": "moodle create quiz from google doc create quiz file from google doc",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doc ID",
+        "type": "string",
+        "keywordArg": "doc_id"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      },
+      {
+        "name": "Output Format",
+        "type": "string",
+        "keywordArg": "output_format"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.upload_file_to_moodle",
+    "pkg": "moodle",
+    "text": "moodle upload file to moodle upload a file to moodle server",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "File Path",
+        "type": "string",
+        "keywordArg": "file_path"
+      },
+      {
+        "name": "Context ID",
+        "type": "number",
+        "keywordArg": "contextid"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.parse_students_from_excel",
+    "pkg": "moodle",
+    "text": "moodle parse students from excel parse student list from excel file",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "File Path",
+        "type": "string",
+        "keywordArg": "file_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.parse_courses_from_excel",
+    "pkg": "moodle",
+    "text": "moodle parse courses from excel parse course list from excel file",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "File Path",
+        "type": "string",
+        "keywordArg": "file_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.bulk_create_students",
+    "pkg": "moodle",
+    "text": "moodle bulk create students create multiple students at once",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Students",
+        "type": "list",
+        "keywordArg": "students"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.bulk_create_courses_and_enrol_students",
+    "pkg": "moodle",
+    "text": "moodle bulk create courses and enrol students create multiple courses and enrol students",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Courses",
+        "type": "list",
+        "keywordArg": "courses"
+      },
+      {
+        "name": "Student Usernames",
+        "type": "list",
+        "keywordArg": "student_usernames"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.upload_file_to_google_drive",
+    "pkg": "moodle",
+    "text": "moodle upload file to google drive",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "File Path",
+        "type": "string",
+        "keywordArg": "file_path"
+      },
+      {
+        "name": "Folder ID",
+        "type": "string",
+        "keywordArg": "folder_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.download_file_from_google_drive",
+    "pkg": "moodle",
+    "text": "moodle download file from google drive",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "File ID",
+        "type": "string",
+        "keywordArg": "file_id"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.create_quiz_and_upload_to_drive",
+    "pkg": "moodle",
+    "text": "moodle create quiz and upload to drive create quiz from google doc and upload to drive",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doc ID",
+        "type": "string",
+        "keywordArg": "doc_id"
+      },
+      {
+        "name": "Folder ID",
+        "type": "string",
+        "keywordArg": "folder_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_user_by_username",
+    "pkg": "moodle",
+    "text": "moodle get user by username get user information by username",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Username",
+        "type": "string",
+        "keywordArg": "username"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_user_by_email",
+    "pkg": "moodle",
+    "text": "moodle get user by email get user information by email address",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Email",
+        "type": "email",
+        "keywordArg": "email"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_user_by_username_or_email",
+    "pkg": "moodle",
+    "text": "moodle get user by username or email get user by username or email (flexible search)",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Identifier",
+        "type": "string",
+        "keywordArg": "identifier"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_assignment_id_from_url",
+    "pkg": "moodle",
+    "text": "moodle get assignment id from url extract assignment course module id from moodle url",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "URL",
+        "type": "string",
+        "keywordArg": "url"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_assignment_instance_id_from_cmid",
+    "pkg": "moodle",
+    "text": "moodle get assignment instance id from course module id convert course module id to assignment instance id",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      },
+      {
+        "name": "Course Module ID",
+        "type": "number",
+        "keywordArg": "cmid"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.create_submission_for_student",
+    "pkg": "moodle",
+    "text": "moodle create submission for student create/submit assignment for a student",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Assignment ID",
+        "type": "number",
+        "keywordArg": "assignment_id"
+      },
+      {
+        "name": "User ID",
+        "type": "number",
+        "keywordArg": "user_id"
+      },
+      {
+        "name": "Submission Text",
+        "type": "string",
+        "keywordArg": "submission_text"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.submit_assignment_for_students",
+    "pkg": "moodle",
+    "text": "moodle submit assignment for students create submissions for multiple students",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Assignment ID",
+        "type": "number",
+        "keywordArg": "assignment_id"
+      },
+      {
+        "name": "Student Usernames",
+        "type": "list",
+        "keywordArg": "student_usernames"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.setup_gemini_ai",
+    "pkg": "moodle",
+    "text": "moodle setup gemini ai setup gemini ai for automatic grading",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "API Key",
+        "type": "string",
+        "keywordArg": "api_key"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.grade_submission_with_gemini",
+    "pkg": "moodle",
+    "text": "moodle grade submission with gemini grade a student submission using gemini ai",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Submission Text",
+        "type": "string",
+        "keywordArg": "submission_text"
+      },
+      {
+        "name": "Question Text",
+        "type": "string",
+        "keywordArg": "question_text"
+      },
+      {
+        "name": "Answer Key",
+        "type": "string",
+        "keywordArg": "answer_key"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.grade_image_submission_with_gemini_vision",
+    "pkg": "moodle",
+    "text": "moodle grade image submission with gemini vision grade student submission from image using gemini vision",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Image Path",
+        "type": "string",
+        "keywordArg": "image_path"
+      },
+      {
+        "name": "Questions",
+        "type": "string",
+        "keywordArg": "questions"
+      },
+      {
+        "name": "Answer Key",
+        "type": "string",
+        "keywordArg": "answer_key"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.upload_grades_to_moodle",
+    "pkg": "moodle",
+    "text": "moodle upload grades to moodle upload grades to moodle assignment gradebook",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Assignment ID",
+        "type": "number",
+        "keywordArg": "assignment_id"
+      },
+      {
+        "name": "Grades",
+        "type": "list",
+        "keywordArg": "grades"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.export_grading_results_to_excel",
+    "pkg": "moodle",
+    "text": "moodle export grading results to excel export grading results to excel file",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Grading Results",
+        "type": "list",
+        "keywordArg": "grading_results"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.export_grading_results_to_csv",
+    "pkg": "moodle",
+    "text": "moodle export grading results to csv export grading results to csv for moodle gradebook import",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Grading Results",
+        "type": "list",
+        "keywordArg": "grading_results"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      },
+      {
+        "name": "Grade Item Name",
+        "type": "string",
+        "keywordArg": "grade_item_name"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.export_detailed_grading_results_to_excel",
+    "pkg": "moodle",
+    "text": "moodle export detailed grading results to excel export detailed student answers and grading breakdown to excel",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Grading Results",
+        "type": "list",
+        "keywordArg": "grading_results"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.export_student_answers_to_csv",
+    "pkg": "moodle",
+    "text": "moodle export student answers to csv export only student answers to csv (without grading details)",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Grading Results",
+        "type": "list",
+        "keywordArg": "grading_results"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.complete_auto_grading_and_upload_workflow",
+    "pkg": "moodle",
+    "text": "moodle complete auto grading and upload workflow grade submissions and upload results to moodle",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Submissions Folder ID",
+        "type": "string",
+        "keywordArg": "submissions_folder_id"
+      },
+      {
+        "name": "Question File ID",
+        "type": "string",
+        "keywordArg": "question_file_id"
+      },
+      {
+        "name": "Answer Key File ID",
+        "type": "string",
+        "keywordArg": "answer_key_file_id"
+      },
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      },
+      {
+        "name": "Assignment ID",
+        "type": "number",
+        "keywordArg": "assignment_id"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.grade_all_image_submissions",
+    "pkg": "moodle",
+    "text": "moodle grade all image submissions grade all image submissions using gemini vision",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Submissions Folder ID",
+        "type": "string",
+        "keywordArg": "submissions_folder_id"
+      },
+      {
+        "name": "Question File ID",
+        "type": "string",
+        "keywordArg": "question_file_id"
+      },
+      {
+        "name": "Answer Key File ID",
+        "type": "string",
+        "keywordArg": "answer_key_file_id"
+      },
+      {
+        "name": "Max Score",
+        "type": "number",
+        "keywordArg": "max_score"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.list_files_in_google_drive_folder",
+    "pkg": "moodle",
+    "text": "moodle list files in google drive folder list all files in a google drive folder",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Folder ID",
+        "type": "string",
+        "keywordArg": "folder_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.complete_bulk_enrollment_workflow",
+    "pkg": "moodle",
+    "text": "moodle complete bulk enrollment workflow download excel from drive, create students and courses",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Students File ID",
+        "type": "string",
+        "keywordArg": "students_file_id"
+      },
+      {
+        "name": "Courses File ID",
+        "type": "string",
+        "keywordArg": "courses_file_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_grades",
+    "pkg": "moodle",
+    "text": "moodle get course grades get all student grades in a course",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_assignment_submissions",
+    "pkg": "moodle",
+    "text": "moodle get assignment submissions get all student submissions for an assignment",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Assignment ID",
+        "type": "number",
+        "keywordArg": "assignment_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_assignment_grades",
+    "pkg": "moodle",
+    "text": "moodle get assignment grades get grades for all students in an assignment",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Assignment ID",
+        "type": "number",
+        "keywordArg": "assignment_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_enrolled_users",
+    "pkg": "moodle",
+    "text": "moodle get course enrolled users get all users enrolled in a course",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.export_course_grades_to_excel",
+    "pkg": "moodle",
+    "text": "moodle export course grades to excel export all course grades to excel file",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.export_course_grades_to_csv",
+    "pkg": "moodle",
+    "text": "moodle export course grades to csv export all course grades to csv file",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      },
+      {
+        "name": "Output Path",
+        "type": "string",
+        "keywordArg": "output_path"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_activity_completion",
+    "pkg": "moodle",
+    "text": "moodle get course activity completion get activity completion status for course",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      },
+      {
+        "name": "User ID",
+        "type": "number",
+        "keywordArg": "userid"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.generate_course_report",
+    "pkg": "moodle",
+    "text": "moodle generate course report generate comprehensive course report (grades, enrollments, submissions)",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
+      },
+      {
+        "name": "Output Directory",
+        "type": "string",
+        "keywordArg": "output_dir"
+      }
+    ]
+  },
+  {
+    "templateId": "moodle.get_course_statistics",
+    "pkg": "moodle",
+    "text": "moodle get course statistics get comprehensive statistics about a course",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Course ID",
+        "type": "number",
+        "keywordArg": "course_id"
       }
     ]
   }

@@ -50,6 +50,7 @@ class Relation(BaseModel):
 class BPMNNode(BaseModel):
     id: str
     type: NodeType
+    queryActivity: Optional[str] = None
     name: str
     lane: Optional[str] = None
     pool: Optional[str] = None
@@ -82,7 +83,7 @@ class Mapping(BaseModel):
 
 class GraphOutput(BaseModel):
     intent: Optional[Dict[str, Any]] = None
-    entities: List[Entity] = Field(default_factory=list)
-    relations: List[Relation] = Field(default_factory=list)
+    entities: Optional[List[Entity]] = Field(default_factory=list)
+    relations: Optional[List[Relation]] = Field(default_factory=list)
     bpmn: Dict[str, List[Any]]  # {"nodes":[...], "flows":[...]}
     mapping: Optional[List[Mapping]] = None

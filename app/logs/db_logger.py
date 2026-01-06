@@ -3,6 +3,7 @@ PostgreSQL logger for pipeline state logging.
 """
 import json
 import logging
+import threading
 from datetime import datetime
 from typing import Dict, Any, Optional, List
 
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 _connection_pool: Optional[Any] = None
 
 
-def init_connection_pool(minconn=1, maxconn=10):
+def init_connection_pool(minconn=1, maxconn=20):
     """
     Initialize PostgreSQL connection pool.
     """
@@ -45,7 +46,8 @@ def init_connection_pool(minconn=1, maxconn=10):
                 port=config["port"],
                 database=config["database"],
                 user=config["user"],
-                password=config["password"]
+                password=config["password"],
+                sslmode="require"
             )
             logger.info("PostgreSQL connection pool initialized successfully")
         except Exception as e:
@@ -259,11 +261,166 @@ def create_pipeline_log(thread_id: str, original_text: str) -> Optional[int]:
         return None
 
 
+def calculate_average_scores(candidates: List[Dict[str, Any]]) -> Dict[str, float]:
+    """
+    Calculate average scores from top 5 candidates returned by hybrid_search.
+    
+    Args:
+        candidates: List of candidate dictionaries with score fields from hybrid_search:
+                   - score: final combined score
+                   - bm25_norm: normalized BM25 score
+                   - vec_norm: normalized vector (cosine) similarity score
+                   - rule_bonus: rule-based bonus score
+    
+    Returns:
+        Dictionary with average scores:
+        {
+            "avg_total_score": float,      # Average of final combined score
+            "avg_bm25_score": float,        # Average of BM25 normalized score
+            "avg_cosine_score": float,      # Average of vector similarity (cosine) score
+            "num_candidates": int           # Number of candidates (max 5)
+        }
+    """
+    # Take only top 5 candidates
+    top_candidates = candidates[:5]
+    num_candidates = len(top_candidates)
+    
+    if num_candidates == 0:
+        return {
+            "avg_total_score": 0.0,
+            "avg_bm25_score": 0.0,
+            "avg_cosine_score": 0.0,
+            "num_candidates": 0
+        }
+    
+    # Calculate averages from hybrid_search score fields
+    total_score = 0.0
+    bm25_score = 0.0
+    cosine_score = 0.0
+    
+    for candidate in top_candidates:
+        # Final combined score
+        total_score += candidate.get("score", 0.0)
+        # BM25 normalized score
+        bm25_score += candidate.get("bm25_norm", 0.0)
+        # Vector similarity (cosine) normalized score
+        cosine_score += candidate.get("vec_norm", 0.0)
+    
+    return {
+        "avg_total_score": total_score / num_candidates,
+        "avg_bm25_score": bm25_score / num_candidates,
+        "avg_cosine_score": cosine_score / num_candidates,
+        "num_candidates": num_candidates
+    }
+
+
+def _log_retrieval_scores_worker(
+    thread_id: str,
+    node_id: str,
+    node_name: str,
+    candidates: List[Dict[str, Any]],
+    avg_scores: Dict[str, float]
+):
+    """
+    Worker function to log retrieval scores in a separate thread.
+    This is called by log_retrieval_scores_async.
+    """
+    if not PSYCOPG2_AVAILABLE:
+        logger.warning("psycopg2 not available, skipping retrieval scores log")
+        return
+    
+    conn = None
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        print("Logging retrieval scores to database...")
+        # Convert candidates to JSONB (store top 5)
+        candidates_json = Json(candidates[:5])
+        
+        # Insert retrieval scores log
+        query = """
+            INSERT INTO retrieval_scores (
+                thread_id, node_id, node_name,
+                avg_total_score, avg_bm25_score, avg_cosine_score,
+                num_candidates, candidates, timestamp
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING id
+        """
+        
+        cursor.execute(query, (
+            thread_id,
+            node_id,
+            node_name,
+            avg_scores["avg_total_score"],
+            avg_scores["avg_bm25_score"],
+            avg_scores["avg_cosine_score"],
+            avg_scores["num_candidates"],
+            candidates_json,
+            datetime.now()
+        ))
+        score_id = cursor.fetchone()[0]
+        conn.commit()
+        
+        logger.info(
+            f"Logged retrieval scores (id: {score_id}, thread_id: {thread_id}, "
+            f"node_id: {node_id}, avg_total: {avg_scores['avg_total_score']:.4f})"
+        )
+        
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        logger.error(f"Failed to log retrieval scores to database: {e}")
+    finally:
+        if conn:
+            return_connection(conn)
+
+
+def log_retrieval_scores_async(
+    thread_id: str,
+    node_id: str,
+    node_name: str,
+    candidates: List[Dict[str, Any]]
+) -> threading.Thread:
+    """
+    Log retrieval scores to database in a separate thread.
+    Calculates average scores from top 5 candidates and stores them asynchronously.
+    
+    Args:
+        thread_id: Pipeline thread ID
+        node_id: BPMN node ID
+        node_name: BPMN node name
+        candidates: List of candidate dictionaries from hybrid_search
+    
+    Returns:
+        Thread object (already started)
+    """
+    # Calculate average scores in main thread (fast operation)
+    avg_scores = calculate_average_scores(candidates)
+    
+    # Log to database in separate thread (I/O operation)
+    thread = threading.Thread(
+        target=_log_retrieval_scores_worker,
+        args=(thread_id, node_id, node_name, candidates, avg_scores),
+        daemon=True,
+        name=f"RetrievalScoresLogger-{node_id}"
+    )
+    thread.start()
+    
+    logger.debug(
+        f"Started async logging for node {node_id} "
+        f"(avg_total: {avg_scores['avg_total_score']:.4f}, "
+        f"num_candidates: {avg_scores['num_candidates']})"
+    )
+    
+    return thread
+
+
 if __name__ == "__main__":
     init_schema("app/logs/schema.sql")
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM pipeline_logs")
+    cursor.execute("ALTER TABLE pipeline_logs ALTER COLUMN original_text TYPE TEXT")
     print(cursor.fetchall())
     conn.close()
     cursor.close()

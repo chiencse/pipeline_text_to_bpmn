@@ -89,7 +89,11 @@ def pipeline_b_start(req: Req):
     """
     thread_id = str(uuid.uuid4())
     config = {"configurable": {"thread_id": thread_id}}
-    initial_state = {"text": req.text, "config": req.options or {}}
+    initial_state = {
+        "text": req.text, 
+        "config": req.options or {},
+        "thread_id": thread_id  # Add thread_id to state for logging
+    }
     threading.Thread(
                 target=create_pipeline_log_safe,
                 args=(thread_id, req.text),
@@ -292,7 +296,7 @@ def submit_feedback(thread_id: str, feedback: FeedbackResponse, background_tasks
     """
     config = {"configurable": {"thread_id": thread_id}}
     checkpoint_state = graph_b.get_state(config)
-    
+    print("feedback: ", feedback)
     if checkpoint_state is None:
         raise HTTPException(status_code=404, detail="Thread not found")
     
@@ -303,7 +307,7 @@ def submit_feedback(thread_id: str, feedback: FeedbackResponse, background_tasks
     
     update = {}
 
-    
+    print("pending_node: ", pending_node)
     # Determine which feedback node is pending based on checkpoint.next
     if pending_node == "user_feedback":
         # First feedback (BPMN) is pending
@@ -528,7 +532,19 @@ def pipeline_b(req: Req):
     Legacy endpoint: Run Scenario B pipeline synchronously (without interrupts).
     For new implementations, use /pipeline/b/start with feedback endpoints.
     """
-    state = {"text": req.text, "config": req.options or {}}
+    thread_id = str(uuid.uuid4())
+    state = {
+        "text": req.text, 
+        "config": req.options or {},
+        "thread_id": thread_id  # Add thread_id for logging
+    }
+    # Create pipeline log in background
+    threading.Thread(
+        target=create_pipeline_log_safe,
+        args=(thread_id, req.text),
+        daemon=True
+    ).start()
+    
     out = graph_b.invoke(state)
     # Log and visualize state after graph execution
     log_path = log_state(out, step="pipeline_b")

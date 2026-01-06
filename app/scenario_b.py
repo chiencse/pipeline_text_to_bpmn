@@ -14,6 +14,7 @@ from app.retrieval import hybrid_search, get_control_and_data_manipulation_templ
 from app.validator import validate_bpmn
 from app.llm import call_llm_bpmn_free, call_llm_evaluate_automation_feasibility, call_llm_bpmn_with_feedback, call_llm_mapping_with_feedback
 from app.bpmn_converter import render_bpmn_output
+from app.logs.db_logger import log_retrieval_scores_async
 import json
 from pprint import pprint
 
@@ -147,9 +148,12 @@ def retrieve_candidates_for_task(task, state: PipelineState = None):
     """
     Retrieve candidates using hybrid search for a task.
     Enhances query with relevant sentences from state based on node name.
+    Logs retrieval scores asynchronously to database.
     """
     node_name = task.get("name", "")
-    q = node_name
+    query_activity = task.get("queryActivity", "")
+    node_id = task.get("id", "")
+    q = query_activity + " " + node_name
     
     # If state is provided, find relevant sentences and integrate into query context
     # if state:
@@ -187,7 +191,25 @@ def retrieve_candidates_for_task(task, state: PipelineState = None):
     #             context = " ".join(top_sentences)
     #             q = f"{node_name} {context}".strip()
     
-    return hybrid_search(q, k=5)
+    # Retrieve candidates from hybrid search
+    candidates = hybrid_search(q, k=5)
+    
+    # Log retrieval scores asynchronously if state is provided
+    if candidates and state:
+        # Get thread_id from state (added in pipeline_b_start)
+        thread_id = state.get("thread_id", "unknown")
+        
+        try:
+            log_retrieval_scores_async(
+                thread_id=thread_id,
+                node_id=node_id,
+                node_name=node_name,
+                candidates=candidates
+            )
+        except Exception as e:
+            print(f"[retrieve_candidates_for_task] Warning: Failed to start retrieval scores logging for node {node_id}: {e}")
+    
+    return candidates
 
 def node_retrieve_map(state: PipelineState):
     """
@@ -204,13 +226,14 @@ def node_retrieve_map(state: PipelineState):
     nodes = bpmn.get("nodes", []) if isinstance(bpmn, dict) else []
     flows = bpmn.get("flows", []) if isinstance(bpmn, dict) else []
     original_text = state.get("text", "")
-    entities = state.get("entities", [])
-    
+
     # Check if this is a feedback flow
     user_mapping_feedback_text = state.get("user_mapping_feedback_text", "")
     selected_node_ids = state.get("selected_node_ids", [])
     is_feedback_flow = bool(user_mapping_feedback_text and user_mapping_feedback_text.strip())
-    
+    print(f"[node_bpmn_mapping] Feedback flow detected. Using call_llm_bpmn_mapping_with_feedback")
+    print(f"[node_bpmn_mapping] Feedback text: {user_mapping_feedback_text[:100]}...")
+    print(f"[node_bpmn_mapping] Selected node IDs: {selected_node_ids}")
     # Get control and data manipulation templates (always included)
     control_templates, data_manipulation_templates = get_control_and_data_manipulation_templates()
     
@@ -254,16 +277,23 @@ def node_retrieve_map(state: PipelineState):
     
     if is_feedback_flow:
         # This is a feedback flow - call feedback function
-        current_mapping_raw = state.get("mapping", [])
+        print(f"[node_retrieve_map] Feedback flow detected. Using call_llm_mapping_with_feedback")
+        print(f"[node_retrieve_map] Feedback text: {user_mapping_feedback_text[:100]}...")
+        print(f"[node_retrieve_map] Selected node IDs: {selected_node_ids}")
+        
+        current_mapping_raw = state.get("mapping") or []
+        print(f"[node_retrieve_map] Current mapping (raw): {current_mapping_raw}")
         
         # Convert current_mapping from [{node_id: mapping_entry}, ...] to [mapping_entry, ...]
         current_mapping = []
-        for item in current_mapping_raw:
-            if isinstance(item, dict):
-                # Extract the mapping_entry from the dict
-                for node_id, mapping_entry in item.items():
-                    current_mapping.append(mapping_entry)
+        if current_mapping_raw:  # Only process if mapping exists and is not None/empty
+            for item in current_mapping_raw:
+                if isinstance(item, dict):
+                    # Extract the mapping_entry from the dict
+                    for node_id, mapping_entry in item.items():
+                        current_mapping.append(mapping_entry)
         
+        print(f"[node_retrieve_map] Current mapping (converted): {len(current_mapping)} entries")
         # Flatten candidates dict into a list with node_id attached
         candidates_list = []
         for node_id, candidates in act_candidates_dict.items():
@@ -272,10 +302,7 @@ def node_retrieve_map(state: PipelineState):
                 candidate_with_node["node_id"] = node_id
                 candidates_list.append(candidate_with_node)
         
-        print(f"[node_retrieve_map] Feedback flow detected. Using call_llm_mapping_with_feedback")
-        print(f"[node_retrieve_map] Feedback text: {user_mapping_feedback_text[:100]}...")
-        print(f"[node_retrieve_map] Selected node IDs: {selected_node_ids}")
-        
+
         # Call feedback function
         updated_mapping = call_llm_mapping_with_feedback(
             original_text=original_text,
@@ -445,9 +472,9 @@ def node_user_feedback_mapping(state: PipelineState):
             state["user_mapping_feedback_text"] = None
         else:
             if isinstance(feedback_text, str) and feedback_text.strip():
-                # Clear mapping to force re-retrieval
-                # Keep user_mapping_feedback_text for node_retrieve_map to use in feedback flow
-                state["mapping"] = None
+                # Keep mapping for node_retrieve_map to use in feedback flow
+                # Don't clear mapping here - node_retrieve_map needs it for call_llm_mapping_with_feedback
+                # Mapping will be updated by node_retrieve_map after feedback processing
                 state.setdefault("improvements", []).append({"action": "mapping_feedback_applied"})
                 # Don't clear user_mapping_feedback_text here - let node_retrieve_map clear it after using it
 
