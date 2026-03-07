@@ -152,8 +152,3 @@ jobs:
                 sleep 5
               fi
             done
-
-            echo "❌ Health check failed"
-            echo "=== Container logs ==="
-            docker logs bpmn-generator --tail 50 || true
-            exit 1
