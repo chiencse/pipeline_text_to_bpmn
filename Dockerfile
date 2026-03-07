@@ -54,6 +54,9 @@ RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 # Copy source code
 COPY --chown=appuser:appgroup . .
 
+# Tạo sẵn các thư mục mà app cần ghi lúc runtime và gán quyền cho appuser
+RUN mkdir -p viz output_bpmn out && chown -R appuser:appgroup viz output_bpmn out
+
 USER appuser
 
 EXPOSE 8010
