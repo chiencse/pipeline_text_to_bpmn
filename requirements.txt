@@ -15,7 +15,5 @@ spacy
 uvicorn
 google-generativeai
 rich
-spacy
 psycopg2-binary
 python-dotenv
-
