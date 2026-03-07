@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  DEPLOY_PATH: /opt/bpmn-generator
+  DEPLOY_PATH: /bpmn-generator
 
 jobs:
   build-and-push:
@@ -64,6 +64,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Prepare deploy directory on EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT }}
+          script: |
+            sudo mkdir -p ${{ env.DEPLOY_PATH }}
+            sudo chown ${{ secrets.EC2_USERNAME }}:${{ secrets.EC2_USERNAME }} ${{ env.DEPLOY_PATH }}
 
       - name: Copy docker-compose to EC2
         uses: appleboy/scp-action@v0.1.7
