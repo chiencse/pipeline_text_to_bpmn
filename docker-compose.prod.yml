@@ -1,0 +1,22 @@
+services:
+  bpmn-generator:
+    image: ghcr.io/${GITHUB_REPOSITORY}:latest
+    container_name: bpmn-generator
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    env_file:
+      - .env
+    volumes:
+      - chroma_data:/app/chroma_activity
+      - app_logs:/app/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8010/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+volumes:
+  chroma_data:
+  app_logs:

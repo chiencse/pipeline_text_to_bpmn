@@ -248,9 +248,11 @@ def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -
         - If a task involves calculation, data entry, or digital verification that implies NO human intervention, set `"is_automatic": true` and assign a `"bot_id"` (e.g., "bot_1").
         - If a task is explicitly human (review, approve, physical action), set `"is_automatic": false`.
 
-    5. **Flow Logic**:
-        - Ensure every split (Gateway) eventually merges or leads to end events.
-        - Handle loops by connecting a SequenceFlow back to a previous Gateway or Task. if the task is in a loop, set "in_loop": true.
+    5. **INPORTANT: Sematic rule and Flow Logic**:
+        - Enforce the rule that all branches emanating from an Gateway must eventually converge at a subsequent Join Gateway.
+        - Handle loops by connecting a SequenceFlow back to a previous Gateway or Task. if the task is in a loop , set "in_loop": true.
+        - if the gateway is condition for loop, set "in_loop": true.
+
 
     Given the text user input context: {text}
 
@@ -262,7 +264,7 @@ def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -
       "bpmn": {{
         "nodes": [
           {{"queryActivity": "send email to officer",
-            "id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", "in_loop": boolean, "automation": {{
+            "id": "n1", "type": "SendTask", "name": "Start", "lane": "Officer", "in_loop": boolean, "automation": {{
             "is_automatic": boolean, 
             "bot_id": "string or null",
             "manual_review_required": boolean
@@ -274,7 +276,8 @@ def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -
             "bot_id": "bot1",
             "manual_review_required": boolean
         }}}},
-          {{"queryActivity": "if/else loop condition for count", "id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway", "in_loop": boolean}}
+          {{"queryActivity": "if/else loop condition for count", "id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway", "in_loop": boolean}},
+          
         ],
         "flows": [
           {{"source": "n1", "target": "n2", "type": "SequenceFlow", "condition": "string (only for flows coming out of ExclusiveGateway)"}},
@@ -339,19 +342,17 @@ def call_llm_bpmn_with_feedback(
     **Context & high-level rules (same as initial creation):**
     - Use BPMN to represent the process. Each software robot (bot) must be represented as a subprocess assignment (bot id) via node.subprocess or mapping.bot_id.
     - If a task is fully automatable by a bot, mark mapping.is_automatic = true and assign mapping.bot_id (e.g., "bot1"). If a task requires a human, mark is_automatic = false, manual_review = true, and either set node.type = "ManualTask" or assign a separate human subprocess (e.g., "human_approver").
-    - Bot permissions and responsibilities are expressed via node.pool and node.lane. Pools represent system boundaries (e.g., "SAP", "EmailSystem"); lanes represent roles or bot identities (e.g., "ProcurementBot", "FinanceBot", "HumanApprover").
+    - Bot permissions and responsibilities are expressed via node.pool and node.lane. Pools represent system boundaries (e.g., "SAP", "EmailSystem"); lanes represent roles
     - For tasks that are partly automated (human-in-the-loop), prefer "UserTask" or "Task" + mapping.manual_review = true.
-    - Create subprocess ids like "bot1", "bot2", "human1" when splitting the process across multiple bots/actors. Each bot should correspond to a meaningful subprocess that groups its tasks.
+    - Create subprocess ids like "1", "2" follow sequence when splitting for the loop in the process.
     
     **Rules:**
     - Output ONLY a single valid JSON object that strictly follows the GraphOutput schema below.
     - Do NOT include explanations, comments, markdown, or extra fields.
-    - Entities are provided as a list of objects with: text, label, confidence (optional), start (optional), end (optional).
-    - Use ONLY these entity labels: Action, Object, Role, System, Event, DataField, Condition, Resource, Process, Output.
-    - Use dependency parser info to infer relationships and task sequence.
-    - Type BPMN supported: StartEvent, EndEvent, Task, ManualTask, UserTask, Gateway(Exclusive, Parallel).
+    - Type BPMN supported: StartEvent, EndEvent, Task, ManualTask, UserTask, ReceiveTask, SendTask, Gateway(Exclusive, Parallel).
     - Ensure flows connect nodes logically based on process sequence. Follow rule design bpmn process in BPMN 2.0, e.g., upload must occur before send or email.
-    
+    - Enforce the rule that all branches emanating from an Gateway must eventually converge at a subsequent Join Gateway.
+    - Prohibit the inclusion of looping behavior directly within the BPMN diagram. Instead, we implement loops using Subprocesses
     **Your task:**
     - Review the CURRENT BPMN model provided below
     - Understand the user's feedback
@@ -375,9 +376,9 @@ def call_llm_bpmn_with_feedback(
     {{
       "bpmn": {{
         "nodes": [
-          {{"id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", "subprocess": ""}},
-          {{"id": "n2", "type": "Task", "name": "Select menu", "lane": "Officer", "subprocess": "bot1"}},
-          {{"id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway"}}
+          {{"id": "n1", "type": "StartEvent", "name": "Start", "lane": "Officer", "in_loop": boolean, "subprocess": ""}},
+          {{"id": "n2", "type": "Task", "name": "Select menu", "lane": "Officer", "in_loop": boolean, "subprocess": "bot1"}},
+          {{"id": "n3", "type": "ExclusiveGateway", "name": "Exclusive Gateway", "in_loop": boolean}}
         ],
         "flows": [
           {{"source": "n1", "target": "n2", "type": "SequenceFlow", "condition": ""}},
@@ -464,13 +465,13 @@ def call_llm_mapping_with_feedback(
     
     **IMPORTANT**: You must follow ALL the same rules and evaluation criteria as when creating initial mappings, but now your goal is to MODIFY the existing mappings according to the user's feedback.
     
-    **Context & Rules (same as initial mapping):**
+    **Context & Rules:**
     - Use BPMN to represent the process. Each software robot (bot) must be represented as a subprocess assignment (bot id) via node.subprocess or mapping.bot_id.
     - If a task is fully automatable by a bot, mark mapping.is_automatic = true and assign mapping.bot_id (e.g., "bot1"). If a task requires a human, mark is_automatic = false, manual_review = true.
     - Bot permissions and responsibilities are expressed via node.pool and node.lane.
     - For tasks that are partly automated (human-in-the-loop), prefer "UserTask" or "Task" + mapping.manual_review = true.
     
-    **Evaluation Criteria (same as initial):**
+    **Evaluation Criteria:**
     1. **Automation Feasibility**: Can this task be fully automated by an RPA bot?
     2. **Activity Matching**: Select the most suitable activity candidate based on similarity and context.
     3. **Bot Assignment**: Assign appropriate bot_id for automated tasks.
@@ -491,11 +492,11 @@ def call_llm_mapping_with_feedback(
     **Available Activity Candidates:**
     {json.dumps(filtered_candidates, indent=2, ensure_ascii=False)}
     
+    
+    **User Selected Node IDs (nodes to revise):**
+    {selected_node_ids if selected_node_ids else "All nodes"}
     **User Feedback:**
     {user_feedback_text}
-    
-    **Selected Node IDs (nodes to revise):**
-    {selected_node_ids if selected_node_ids else "All nodes"}
     
     **Original Input:**
     Text: {original_text}
@@ -663,7 +664,7 @@ Considering all candidates, even those with high scores may not be suitable for 
   - Creating, uploading, updating, deleting, or actions to Education entities like courses, classes, students, teachers, etc.
   - Grading or calculating final marks (grading does NOT require a document template)
 - A suitable activity candidate always exists OR the task can be handled by:
-  - Gateway nodes with Control flow (if, for, while, loop, count, compare) - Use default suitable activity template "control" for control flow.
+  - Gateway nodes with Control flow (if, for, while, loop, count, compare) - Assign suitable keyword activity(example: if, for_each, for_range,...) of template "control" in candidate.
   - "data_manipulation" package for calculations or transformations
 - If a node has "in_loop": true, automation is strongly preferred.
 
@@ -675,7 +676,7 @@ A task is considered NOT AUTOMATABLE if:
 
 **Important Rules:**
 - Do NOT try to map every node. Select at most ONE suitable activity template candidate(with education grading assign "OCR")
-- Gateway nodes with Question cannot calculate to compare so we cannot automate this task.
+- Gateway nodes with Question cannot calculate to compare so we cannot automate this task. Join Gateway is not automatable.
 - ManualTask and UserTask types generally indicate human involvement - evaluate carefully.
 
 

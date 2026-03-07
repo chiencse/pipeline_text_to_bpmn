@@ -231,9 +231,7 @@ def node_retrieve_map(state: PipelineState):
     user_mapping_feedback_text = state.get("user_mapping_feedback_text", "")
     selected_node_ids = state.get("selected_node_ids", [])
     is_feedback_flow = bool(user_mapping_feedback_text and user_mapping_feedback_text.strip())
-    print(f"[node_bpmn_mapping] Feedback flow detected. Using call_llm_bpmn_mapping_with_feedback")
-    print(f"[node_bpmn_mapping] Feedback text: {user_mapping_feedback_text[:100]}...")
-    print(f"[node_bpmn_mapping] Selected node IDs: {selected_node_ids}")
+
     # Get control and data manipulation templates (always included)
     control_templates, data_manipulation_templates = get_control_and_data_manipulation_templates()
     
