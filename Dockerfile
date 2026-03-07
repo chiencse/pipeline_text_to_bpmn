@@ -28,8 +28,8 @@ COPY requirements.txt .
 # Cài đặt dependencies bằng uv (nhanh hơn pip 10-100x, giải quyết dependency tốt hơn)
 RUN uv pip install -r requirements.txt
 
-# Tải spaCy model
-RUN python -m spacy download en_core_web_sm
+# Tải spaCy model (dùng uv thay vì spacy download vì spacy download gọi pip nội bộ)
+RUN uv pip install en_core_web_sm@https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 
 # ============================================ #
 # Stage 2: Runtime – chạy ứng dụng
