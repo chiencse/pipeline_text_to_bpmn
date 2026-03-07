@@ -48,14 +48,19 @@ WORKDIR /app
 # Copy virtual environment đã build từ Stage 1
 COPY --from=builder /opt/venv /opt/venv
 
-# Tạo user non-root để tăng bảo mật
-RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+# Tạo user non-root với home directory thật để các thư viện (huggingface_hub, etc.) có thể ghi cache
+RUN addgroup --system appgroup && \
+    adduser --system --ingroup appgroup --home /home/appuser appuser
 
 # Copy source code
-COPY --chown=appuser:appgroup . .
+COPY . .
 
-# Tạo sẵn các thư mục mà app cần ghi lúc runtime và gán quyền cho appuser
-RUN mkdir -p viz output_bpmn out && chown -R appuser:appgroup viz output_bpmn out
+# Gán quyền toàn bộ /app và home cho appuser
+RUN chown -R appuser:appgroup /app /home/appuser
+
+# Đặt biến môi trường cache cho HuggingFace và các thư viện ML khác
+ENV HF_HOME=/home/appuser/.cache/huggingface \
+    XDG_CACHE_HOME=/home/appuser/.cache
 
 USER appuser
 
