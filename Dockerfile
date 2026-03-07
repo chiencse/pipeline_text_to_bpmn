@@ -25,6 +25,9 @@ ENV VIRTUAL_ENV=/opt/venv \
 # Copy requirements trước (tận dụng Docker layer cache)
 COPY requirements.txt .
 
+# Cài PyTorch bản CPU-only trước (~250MB thay vì ~2.5GB bản CUDA)
+RUN uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
 # Cài đặt dependencies bằng uv (nhanh hơn pip 10-100x, giải quyết dependency tốt hơn)
 RUN uv pip install -r requirements.txt
 
