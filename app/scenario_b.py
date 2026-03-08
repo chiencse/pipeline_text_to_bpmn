@@ -8,7 +8,7 @@ from app.pos_dep import node_pos_dep
 from app.preprocessing import node_preprocess
 from app.state import PipelineState
 from app.utils import simple_chunk
-from app.ner_hf import run_hf_ner
+
 from app.relation_extraction import extract_relations_from_state
 from app.retrieval import hybrid_search, get_control_and_data_manipulation_templates
 from app.validator import validate_bpmn
@@ -63,10 +63,7 @@ def sanitize_state_for_persistence(state: dict, allowed_keys=None):
     return out
 
 # ---------- Nodes ----------
-def node_ner_ft(state: PipelineState):
 
-    state["entities"] = run_hf_ner(state.get("chunks") or [])
-    return state
 
 def node_re_rule(state: PipelineState):
     state = extract_relations_from_state(state)
@@ -643,7 +640,7 @@ def build_graph_b():
 
     g.add_node("preprocess", node_preprocess)
     g.add_node("pos_dep", node_pos_dep)
-    g.add_node("ner_ft", node_ner_ft)
+
     g.add_node("re_rule", node_re_rule)
     g.add_node("bpmn_free", node_bpmn_free)
     g.add_node("render_draft", node_render_draft)
@@ -667,8 +664,7 @@ def build_graph_b():
     # Normal flow
     g.add_edge(START, "preprocess")
     g.add_edge("preprocess", "pos_dep")
-    g.add_edge("pos_dep", "ner_ft")
-    g.add_edge("ner_ft", "re_rule")
+    g.add_edge("pos_dep", "re_rule")
     g.add_edge("re_rule", "bpmn_free")
 
     g.add_edge("bpmn_free", "render_draft")
