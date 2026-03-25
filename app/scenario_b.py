@@ -105,7 +105,7 @@ def node_bpmn_free(state: PipelineState):
         state["selected_node_ids"] = None
     else:
         # Normal flow - call regular function
-        out = call_llm_bpmn_free(state.get("text", ""), state.get("entities", []), state.get("relations", []))
+        out = call_llm_bpmn_free(state.get("text", ""))
     # bpmn_safe: prefer .dict() if available
     try:
         bpmn_obj = getattr(out, "bpmn", None)

@@ -53,7 +53,34 @@ def extract_activity_packages(ts_text: str) -> str:
 
     # 3) Một số field có thể là trailing comma — json5 chấp nhận, nên không cần xoá.
     return raw_array
+def normalize_ts_to_json5(raw: str) -> str:
+    # 1. Xoá comment
+    raw = re.sub(r"//.*", "", raw)
+    raw = re.sub(r"/\*.*?\*/", "", raw, flags=re.S)
 
+    # 2. RFVarType → ký hiệu
+    raw = re.sub(r'RFVarType\[\s*[\'"](\w+)[\'"]\s*\]', r'"\1"', raw)
+
+    # 3. Enum kiểu ResourceType.FILE → "FILE"
+    raw = re.sub(r'\b\w+\.(\w+)', r'"\1"', raw)
+
+    # 4. Arrow function → null
+    raw = re.sub(r'\([^)]*\)\s*=>\s*{[^}]*}', 'null', raw)
+    raw = re.sub(r'\([^)]*\)\s*=>\s*[^,}\]]+', 'null', raw)
+
+    # 5. function() {} → null
+    raw = re.sub(r'function\s*\([^)]*\)\s*{[^}]*}', 'null', raw)
+
+    # 6. Regex /abc/g → null
+    raw = re.sub(r'/[^/\n]+/[gimsuy]*', 'null', raw)
+
+    # 7. Template string `...` → ""
+    raw = re.sub(r'`[^`]*`', '""', raw)
+
+    # 8. undefined → null
+    raw = re.sub(r'\bundefined\b', 'null', raw)
+
+    return raw
 def build_tpl_docs(activity_packages):
     """
     Mirror logic buildTplDocs() trong TS:
@@ -131,13 +158,18 @@ def main():
 
     ts_text = TS_FILE.read_text(encoding="utf-8")
     raw_array = extract_activity_packages(ts_text)
+    raw_array = normalize_ts_to_json5(raw_array)
 
     # Parse JSON5 → Python
     try:
         activity_packages = json5.loads(raw_array)
     except Exception as e:
-        # Gợi ý debug khi fail parse
-        print("Lỗi parse JSON5 từ activity.ts. Hãy kiểm tra các biểu thức TS lạ chưa được thay thế.")
+        print("Lỗi parse JSON5 từ activity.ts.")
+
+        lines = raw_array.splitlines()
+        for i in range(1180, min(1220, len(lines))):
+            print(f"{i+1}: {lines[i]}")
+
         raise
 
     # Build docs

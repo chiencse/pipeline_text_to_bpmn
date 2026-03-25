@@ -1,19 +1,19 @@
 [
   {
-    "templateId": "google_drive.set_up_connection",
+    "templateId": "\"set_up_connection\"",
     "pkg": "google_drive",
     "text": "google drive setup drive connection set up drive connection for following task init drive",
     "keyword": "init drive",
     "requiredArgs": [
       {
         "name": "Connection",
-        "type": "connection.Google Drive",
+        "type": "\"Google\" Drive",
         "keywordArg": "token_file"
       }
     ]
   },
   {
-    "templateId": "drive.create_folder",
+    "templateId": "\"create_folder\"",
     "pkg": "google_drive",
     "text": "google drive create folder create a google drive folder in a given directory create drive directory",
     "keyword": "create drive directory",
@@ -31,7 +31,7 @@
     ]
   },
   {
-    "templateId": "drive.dowload_files",
+    "templateId": "\"dowload_files\"",
     "pkg": "google_drive",
     "text": "google drive dowload files dowload files from drive folders download drive files",
     "keyword": "download drive files",
@@ -49,7 +49,7 @@
     ]
   },
   {
-    "templateId": "drive.upload_file",
+    "templateId": "\"upload_file\"",
     "pkg": "google_drive",
     "text": "google drive upload file upload a file from robot's file system to google drive upload drive file",
     "keyword": "upload drive file",
@@ -77,7 +77,7 @@
     ]
   },
   {
-    "templateId": "drive.get_file_list_in_folder",
+    "templateId": "\"get_file_list_in_folder\"",
     "pkg": "google_drive",
     "text": "google drive get file list in folder get a list of files in a given folder in google drive search drive files",
     "keyword": "search drive files",
@@ -95,7 +95,7 @@
     ]
   },
   {
-    "templateId": "drive.get_file_folder",
+    "templateId": "\"get_file_folder\"",
     "pkg": "google_drive",
     "text": "google drive get a file/folder get a file/folder in google drive get drive file by id",
     "keyword": "get drive file by id",
@@ -108,7 +108,7 @@
     ]
   },
   {
-    "templateId": "drive.delete_file_folder",
+    "templateId": "\"delete_file_folder\"",
     "pkg": "google_drive",
     "text": "google drive delete file/folder delete a file/folder in google drive delete drive file",
     "keyword": "delete drive file",
@@ -121,7 +121,7 @@
     ]
   },
   {
-    "templateId": "drive.move_file_folder",
+    "templateId": "\"move_file_folder\"",
     "pkg": "google_drive",
     "text": "google drive move file/folder move a file/folder to another folder in google drive move drive file",
     "keyword": "move drive file",
@@ -139,14 +139,14 @@
     ]
   },
   {
-    "templateId": "drive.share_file_folder",
+    "templateId": "\"share_file_folder\"",
     "pkg": "google_drive",
     "text": "google drive share a file/folder share a file/folder in google drive add drive share",
     "keyword": "add drive share",
     "requiredArgs": [
       {
         "name": "Share Type",
-        "type": "enum.shareType",
+        "type": "\"shareType\"",
         "keywordArg": "share_type"
       },
       {
@@ -156,7 +156,7 @@
       },
       {
         "name": "Permission",
-        "type": "enum.permission",
+        "type": "\"permission\"",
         "keywordArg": "role"
       },
       {
@@ -167,20 +167,20 @@
     ]
   },
   {
-    "templateId": "gmail.set_up_connection",
+    "templateId": "\"set_up_connection\"",
     "pkg": "gmail",
     "text": "gmail setup gmail connection set up gmail connection for following task init gmail",
     "keyword": "init gmail",
     "requiredArgs": [
       {
         "name": "Connection",
-        "type": "connection.Gmail",
+        "type": "\"Gmail\"",
         "keywordArg": "token_file"
       }
     ]
   },
   {
-    "templateId": "gmail.send_email",
+    "templateId": "\"send_email\"",
     "pkg": "gmail",
     "text": "gmail send email send an email to other people using gmail send message",
     "keyword": "send message",
@@ -208,7 +208,7 @@
     ]
   },
   {
-    "templateId": "gmail.list_emails",
+    "templateId": "\"list_emails\"",
     "pkg": "gmail",
     "text": "gmail get list emails list emails in a given folder in gmail list messages",
     "keyword": "list messages",
@@ -236,20 +236,20 @@
     ]
   },
   {
-    "templateId": "google_sheets.set_up_connection",
+    "templateId": "\"set_up_connection\"",
     "pkg": "google_sheets",
     "text": "google sheet setup google sheet connection set up google sheet connection for following task init sheets",
     "keyword": "init sheets",
     "requiredArgs": [
       {
         "name": "Connection",
-        "type": "connection.Google Sheets",
-        "keywordArg": "token_file_path"
+        "type": "\"Google\" Sheets",
+        "keywordArg": "token_file"
       }
     ]
   },
   {
-    "templateId": "sheet.create_spreadsheet",
+    "templateId": "\"create_spreadsheet\"",
     "pkg": "google_sheets",
     "text": "google sheet create spreadsheet create spreadsheet in google sheet",
     "keyword": "",
@@ -262,7 +262,7 @@
     ]
   },
   {
-    "templateId": "sheet.get_spreadsheet_by_id",
+    "templateId": "\"get_spreadsheet_by_id\"",
     "pkg": "google_sheets",
     "text": "google sheet get spreadsheet by id get spreadsheet by id in google sheet get spreadsheet basic information",
     "keyword": "get spreadsheet basic information",
@@ -275,7 +275,7 @@
     ]
   },
   {
-    "templateId": "sheet.add_sheet",
+    "templateId": "\"add_sheet\"",
     "pkg": "google_sheets",
     "text": "google sheet add sheet add sheet to a given spreadsheet in google sheet create sheet",
     "keyword": "create sheet",
@@ -293,7 +293,7 @@
     ]
   },
   {
-    "templateId": "sheet.delete_sheet",
+    "templateId": "\"delete_sheet\"",
     "pkg": "google_sheets",
     "text": "google sheet delete sheet delete sheet from a given spreadsheet in google sheet",
     "keyword": "",
@@ -311,7 +311,7 @@
     ]
   },
   {
-    "templateId": "sheet.rename_sheet",
+    "templateId": "\"rename_sheet\"",
     "pkg": "google_sheets",
     "text": "google sheet rename sheet rename sheet of a given spreadsheet in google sheet",
     "keyword": "",
@@ -334,7 +334,7 @@
     ]
   },
   {
-    "templateId": "sheet.write_data_to_sheet",
+    "templateId": "\"write_data_to_sheet\"",
     "pkg": "google_sheets",
     "text": "google sheet write data to sheet write data to sheet in a given spreadsheet in google sheet update sheet values",
     "keyword": "update sheet values",
@@ -357,7 +357,7 @@
     ]
   },
   {
-    "templateId": "sheet.read_data_from_sheet",
+    "templateId": "\"read_data_from_sheet\"",
     "pkg": "google_sheets",
     "text": "google sheet read data from sheet read data from sheet in a given spreadsheet in google sheet get sheet values",
     "keyword": "get sheet values",
@@ -375,7 +375,7 @@
     ]
   },
   {
-    "templateId": "sheet.clear_data_from_sheet",
+    "templateId": "\"clear_data_from_sheet\"",
     "pkg": "google_sheets",
     "text": "google sheet clear data from sheet clear data from sheet in a given spreadsheet in google sheet clear sheet values",
     "keyword": "clear sheet values",
@@ -393,7 +393,7 @@
     ]
   },
   {
-    "templateId": "google_classroom.set_up_connection",
+    "templateId": "\"set_up_connection\"",
     "pkg": "google_classroom",
     "text": "google classroom setup google classroom connection set up google classroom connection for following task set up classroom connection",
     "keyword": "set up classroom connection",
@@ -405,8 +405,8 @@
       },
       {
         "name": "Connection",
-        "type": "connection.Google Classroom",
-        "keywordArg": "token_file_path"
+        "type": "\"Google\" Classroom",
+        "keywordArg": "token_file"
       }
     ]
   },
@@ -651,7 +651,7 @@
     ]
   },
   {
-    "templateId": "google_form.set_up_connection",
+    "templateId": "\"set_up_connection\"",
     "pkg": "google_form",
     "text": "google form setup google form connection set up google form connection for following task set up form connection",
     "keyword": "set up form connection",
@@ -663,8 +663,8 @@
       },
       {
         "name": "Connection",
-        "type": "connection.Google Form",
-        "keywordArg": "token_file_path"
+        "type": "\"Google\" Form",
+        "keywordArg": "token_file"
       }
     ]
   },
@@ -720,7 +720,7 @@
     "requiredArgs": [
       {
         "name": "Condition",
-        "type": "list.condition",
+        "type": "\"condition\"",
         "keywordArg": null
       }
     ]
@@ -961,6 +961,11 @@
         "name": "Folder path",
         "type": "string",
         "keywordArg": "folder_path"
+      },
+      {
+        "name": "Parent",
+        "type": "number",
+        "keywordArg": "parent"
       }
     ]
   },
@@ -995,7 +1000,7 @@
       },
       {
         "name": "Token File Path",
-        "type": "connection.SAP Mock",
+        "type": "\"SAP\" Mock",
         "keywordArg": "token_file_path"
       },
       {
@@ -1015,6 +1020,16 @@
         "name": "Partner ID",
         "type": "string",
         "keywordArg": "partner_id"
+      },
+      {
+        "name": "Course Shortname",
+        "type": "string",
+        "keywordArg": "course_shortname"
+      },
+      {
+        "name": "Role ID",
+        "type": "number",
+        "keywordArg": "roleid"
       }
     ]
   },
@@ -1056,6 +1071,11 @@
         "name": "JSON Data",
         "type": "string",
         "keywordArg": "json_data"
+      },
+      {
+        "name": "Output Format",
+        "type": "string",
+        "keywordArg": "output_format"
       }
     ]
   },
@@ -1078,92 +1098,279 @@
     ]
   },
   {
-    "templateId": "connect_to_erpnext",
+    "templateId": "\"setup_connection\"",
     "pkg": "rpa-erpnext",
-    "text": "erpnext connect to erpnext connect to erpnext using a base url and api token",
+    "text": "erpnext setup erpnext connection connect to erpnext using a credential file",
     "keyword": "",
     "requiredArgs": [
       {
-        "name": "Base URL",
-        "type": "string",
-        "keywordArg": "base_url"
-      },
-      {
-        "name": "Token File Path",
-        "type": "connection.ERPNext",
+        "name": "Connection",
+        "type": "\"ERPNext\"",
         "keywordArg": "token_file_path"
-      },
-      {
-        "name": "Verify SSL",
-        "type": "boolean",
-        "keywordArg": "verify_ssl"
       }
     ]
   },
   {
-    "templateId": "ensure_item_exists",
+    "templateId": "\"get_document\"",
     "pkg": "rpa-erpnext",
-    "text": "erpnext ensure item exists check if an item exists in erpnext; if not, create one automatically. ensure erp item exists",
-    "keyword": "ensure erp item exists",
+    "text": "erpnext get document get details of a specific document",
+    "keyword": "",
     "requiredArgs": [
       {
-        "name": "Item Code",
+        "name": "Doctype",
         "type": "string",
-        "keywordArg": "item_code"
+        "keywordArg": "doctype"
       },
       {
-        "name": "Item Name",
+        "name": "Name",
         "type": "string",
-        "keywordArg": "item_name"
-      },
-      {
-        "name": "Unit of Measure",
-        "type": "string",
-        "keywordArg": "uom"
+        "keywordArg": "name"
       }
     ]
   },
   {
-    "templateId": "create_material_request",
+    "templateId": "\"list_documents\"",
     "pkg": "rpa-erpnext",
-    "text": "erpnext create material request create a material request document in erpnext with multiple items. create erp material request",
-    "keyword": "create erp material request",
+    "text": "erpnext list documents get a list of documents with filters",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doctype",
+        "type": "string",
+        "keywordArg": "doctype"
+      },
+      {
+        "name": "Filters",
+        "type": "dictionary",
+        "keywordArg": "filters"
+      },
+      {
+        "name": "Fields",
+        "type": "list",
+        "keywordArg": "fields"
+      },
+      {
+        "name": "Limit",
+        "type": "number",
+        "keywordArg": "limit"
+      }
+    ]
+  },
+  {
+    "templateId": "\"update_document\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext update document update an existing document",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doctype",
+        "type": "string",
+        "keywordArg": "doctype"
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "keywordArg": "name"
+      },
+      {
+        "name": "Data",
+        "type": "dictionary",
+        "keywordArg": "data"
+      }
+    ]
+  },
+  {
+    "templateId": "\"delete_document\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext delete document delete a document",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Doctype",
+        "type": "string",
+        "keywordArg": "doctype"
+      },
+      {
+        "name": "Name",
+        "type": "string",
+        "keywordArg": "name"
+      }
+    ]
+  },
+  {
+    "templateId": "\"ensure_company_exist\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext ensure company exist ensure company exists, create if not",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Company",
+        "type": "string",
+        "keywordArg": "company"
+      },
+      {
+        "name": "Abbr",
+        "type": "string",
+        "keywordArg": "abbr"
+      }
+    ]
+  },
+  {
+    "templateId": "\"ensure_warehouse_exist\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext ensure warehouse exist ensure warehouse exists",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Warehouse",
+        "type": "string",
+        "keywordArg": "warehouse"
+      },
+      {
+        "name": "Company",
+        "type": "string",
+        "keywordArg": "company"
+      }
+    ]
+  },
+  {
+    "templateId": "\"ensure_supplier_exist\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext ensure supplier exist ensure supplier exists",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Supplier Name",
+        "type": "string",
+        "keywordArg": "supplier_name"
+      }
+    ]
+  },
+  {
+    "templateId": "\"ensure_items_exist\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext ensure items exist",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Items",
         "type": "list",
-        "keywordArg": "items"
+        "keywordArg": "items_json"
       }
     ]
   },
   {
-    "templateId": "create_request_for_quotation",
+    "templateId": "\"ensure_customer_exist\"",
     "pkg": "rpa-erpnext",
-    "text": "erpnext create request for quotation (rfq) create an rfq in erpnext for one or more suppliers. create erp rfq",
-    "keyword": "create erp rfq",
+    "text": "erpnext ensure customer exist ensure customer exists",
+    "keyword": "",
     "requiredArgs": [
+      {
+        "name": "Customer Name",
+        "type": "string",
+        "keywordArg": "customer_name"
+      },
+      {
+        "name": "Customer Group",
+        "type": "string",
+        "keywordArg": "customer_group"
+      },
+      {
+        "name": "Territory",
+        "type": "string",
+        "keywordArg": "territory"
+      }
+    ]
+  },
+  {
+    "templateId": "\"create_sales_order\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create sales order create a sales order",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Customer",
+        "type": "string",
+        "keywordArg": "customer"
+      },
       {
         "name": "Items",
         "type": "list",
         "keywordArg": "items"
       },
       {
-        "name": "Suppliers",
-        "type": "list",
-        "keywordArg": "suppliers"
+        "name": "Delivery Date",
+        "type": "string",
+        "keywordArg": "delivery_date"
       },
       {
-        "name": "Message For Supplier",
+        "name": "Company",
         "type": "string",
-        "keywordArg": "message_for_supplier"
+        "keywordArg": "company"
       }
     ]
   },
   {
-    "templateId": "create_purchase_order",
+    "templateId": "\"create_sales_invoice\"",
     "pkg": "rpa-erpnext",
-    "text": "erpnext create purchase order create a purchase order document in erpnext for a supplier. create erp purchase order",
-    "keyword": "create erp purchase order",
+    "text": "erpnext create sales invoice create a sales invoice",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Customer",
+        "type": "string",
+        "keywordArg": "customer"
+      },
+      {
+        "name": "Items",
+        "type": "list",
+        "keywordArg": "items"
+      },
+      {
+        "name": "Company",
+        "type": "string",
+        "keywordArg": "company"
+      },
+      {
+        "name": "Posting Date",
+        "type": "string",
+        "keywordArg": "posting_date"
+      }
+    ]
+  },
+  {
+    "templateId": "\"create_stock_entry\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create stock entry create stock entry (material receipt, issue, transfer)",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Purpose",
+        "type": "string",
+        "keywordArg": "purpose"
+      },
+      {
+        "name": "Items",
+        "type": "list",
+        "keywordArg": "items"
+      },
+      {
+        "name": "Company",
+        "type": "string",
+        "keywordArg": "company"
+      },
+      {
+        "name": "Posting Date",
+        "type": "string",
+        "keywordArg": "posting_date"
+      }
+    ]
+  },
+  {
+    "templateId": "\"create_purchase_receipt\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create purchase receipt",
+    "keyword": "",
     "requiredArgs": [
       {
         "name": "Supplier",
@@ -1176,65 +1383,203 @@
         "keywordArg": "items"
       },
       {
-        "name": "Default Rate",
-        "type": "number",
-        "keywordArg": "default_rate"
+        "name": "Company",
+        "type": "string",
+        "keywordArg": "company"
+      },
+      {
+        "name": "Posting Date",
+        "type": "string",
+        "keywordArg": "posting_date"
       }
     ]
   },
   {
-    "templateId": "submit_erp_document",
+    "templateId": "\"create_purchase_invoice\"",
     "pkg": "rpa-erpnext",
-    "text": "erpnext submit erp document submit an existing erpnext document (material request, rfq, or purchase order).",
+    "text": "erpnext create purchase invoice",
     "keyword": "",
     "requiredArgs": [
       {
-        "name": "DocType",
+        "name": "Supplier",
         "type": "string",
-        "keywordArg": "doctype"
+        "keywordArg": "supplier"
       },
       {
-        "name": "Document ID",
+        "name": "Items",
+        "type": "list",
+        "keywordArg": "items"
+      },
+      {
+        "name": "Company",
         "type": "string",
-        "keywordArg": "name"
+        "keywordArg": "company"
+      },
+      {
+        "name": "Posting Date",
+        "type": "string",
+        "keywordArg": "posting_date"
       }
     ]
   },
   {
-    "templateId": "moodle.setup_connection",
+    "templateId": "\"create_payment_entry\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create payment entry",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Payment Type",
+        "type": "string",
+        "keywordArg": "payment_type"
+      },
+      {
+        "name": "Party Type",
+        "type": "string",
+        "keywordArg": "party_type"
+      },
+      {
+        "name": "Party",
+        "type": "string",
+        "keywordArg": "party"
+      },
+      {
+        "name": "Paid Amount",
+        "type": "number",
+        "keywordArg": "paid_amount"
+      },
+      {
+        "name": "Company",
+        "type": "string",
+        "keywordArg": "company"
+      },
+      {
+        "name": "Posting Date",
+        "type": "string",
+        "keywordArg": "posting_date"
+      }
+    ]
+  },
+  {
+    "templateId": "\"load_excel_request\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext load excel request load excel file with company, itemcode, quantity",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Path",
+        "type": "string",
+        "keywordArg": "path"
+      }
+    ]
+  },
+  {
+    "templateId": "\"create_material_request_from_excel\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create material request from excel create material request using loaded excel data",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Path",
+        "type": "string",
+        "keywordArg": "path"
+      },
+      {
+        "name": "Schedule Date",
+        "type": "string",
+        "keywordArg": "schedule_date"
+      }
+    ]
+  },
+  {
+    "templateId": "\"send_rfq_from_mr\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext send rfq from material request create rfq from material request",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Material Request Name",
+        "type": "string",
+        "keywordArg": "mr_name"
+      },
+      {
+        "name": "Suppliers",
+        "type": "list",
+        "keywordArg": "suppliers"
+      }
+    ]
+  },
+  {
+    "templateId": "\"receive_supplier_quotation\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext receive supplier quotation create supplier quotation from rfq",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "RFQ Name",
+        "type": "string",
+        "keywordArg": "rfq_name"
+      },
+      {
+        "name": "Supplier Name",
+        "type": "string",
+        "keywordArg": "supplier_name"
+      },
+      {
+        "name": "Quotation Data",
+        "type": "string",
+        "keywordArg": "quotation_data"
+      }
+    ]
+  },
+  {
+    "templateId": "\"create_purchase_order_from_quotation\"",
+    "pkg": "rpa-erpnext",
+    "text": "erpnext create purchase order from quotation create purchase order from supplier quotation",
+    "keyword": "",
+    "requiredArgs": [
+      {
+        "name": "Quotation Name",
+        "type": "string",
+        "keywordArg": "quotation_name"
+      }
+    ]
+  },
+  {
+    "templateId": "\"setup_connection\"",
     "pkg": "moodle",
     "text": "moodle setup moodle connection set up moodle connection for following tasks set up moodle connection",
     "keyword": "set up moodle connection",
     "requiredArgs": [
       {
         "name": "Connection",
-        "type": "connection.Moodle",
+        "type": "\"Moodle\"",
         "keywordArg": "token_file_path"
       }
     ]
   },
   {
-    "templateId": "moodle.setup_google_connection",
+    "templateId": "\"setup_google_connection\"",
     "pkg": "moodle",
     "text": "moodle setup google docs connection setup google api connection for google docs integration setup google connection",
     "keyword": "setup google connection",
     "requiredArgs": [
       {
         "name": "Connection",
-        "type": "connection.Google Drive",
+        "type": "\"Google\" Drive",
         "keywordArg": "token_file_path"
       }
     ]
   },
   {
-    "templateId": "moodle.get_course_categories",
+    "templateId": "\"get_course_categories\"",
     "pkg": "moodle",
     "text": "moodle get course categories get list of all course categories",
     "keyword": "",
     "requiredArgs": []
   },
   {
-    "templateId": "moodle.create_course_category",
+    "templateId": "\"create_course_category\"",
     "pkg": "moodle",
     "text": "moodle create course category create a new course category",
     "keyword": "",
@@ -1257,7 +1602,7 @@
     ]
   },
   {
-    "templateId": "moodle.ensure_category_exists",
+    "templateId": "\"ensure_category_exists\"",
     "pkg": "moodle",
     "text": "moodle ensure category exists ensure category exists, create if not found",
     "keyword": "",
@@ -1275,7 +1620,7 @@
     ]
   },
   {
-    "templateId": "moodle.create_course",
+    "templateId": "\"create_course\"",
     "pkg": "moodle",
     "text": "moodle create course create a new course in moodle",
     "keyword": "",
@@ -1308,7 +1653,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_course_by_shortname",
+    "templateId": "\"get_course_by_shortname\"",
     "pkg": "moodle",
     "text": "moodle get course by shortname get course information by shortname",
     "keyword": "",
@@ -1321,7 +1666,7 @@
     ]
   },
   {
-    "templateId": "moodle.ensure_course_exists",
+    "templateId": "\"ensure_course_exists\"",
     "pkg": "moodle",
     "text": "moodle ensure course exists ensure course exists, create if not found",
     "keyword": "",
@@ -1349,7 +1694,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_course_contents",
+    "templateId": "\"get_course_contents\"",
     "pkg": "moodle",
     "text": "moodle get course contents get contents of a course",
     "keyword": "",
@@ -1362,7 +1707,7 @@
     ]
   },
   {
-    "templateId": "moodle.generate_quiz_gift_file",
+    "templateId": "\"generate_quiz_gift_file\"",
     "pkg": "moodle",
     "text": "moodle generate quiz gift file generate gift format file for moodle quiz import",
     "keyword": "",
@@ -1380,7 +1725,7 @@
     ]
   },
   {
-    "templateId": "moodle.generate_quiz_xml_file",
+    "templateId": "\"generate_quiz_xml_file\"",
     "pkg": "moodle",
     "text": "moodle generate quiz xml file generate moodle xml format file for quiz import",
     "keyword": "",
@@ -1403,7 +1748,7 @@
     ]
   },
   {
-    "templateId": "moodle.create_user",
+    "templateId": "\"create_user\"",
     "pkg": "moodle",
     "text": "moodle create user create a new user in moodle",
     "keyword": "",
@@ -1436,7 +1781,7 @@
     ]
   },
   {
-    "templateId": "moodle.enroll_user_in_course",
+    "templateId": "\"enroll_user_in_course\"",
     "pkg": "moodle",
     "text": "moodle enroll user in course enroll a user in a course",
     "keyword": "",
@@ -1459,7 +1804,7 @@
     ]
   },
   {
-    "templateId": "moodle.enrol_user",
+    "templateId": "\"enrol_user\"",
     "pkg": "moodle",
     "text": "moodle enrol user enrol user by username and course shortname",
     "keyword": "",
@@ -1482,9 +1827,9 @@
     ]
   },
   {
-    "templateId": "moodle.get_drive_file_id_from_url",
+    "templateId": "\"get_drive_file_id_from_url\"",
     "pkg": "moodle",
-    "text": "moodle get google drive file id from url extract file id from google drive/sheets/docs url",
+    "text": "moodle get google drive file id from url extract file id from google drivenulldocs url",
     "keyword": "",
     "requiredArgs": [
       {
@@ -1495,7 +1840,7 @@
     ]
   },
   {
-    "templateId": "moodle.read_google_doc_content",
+    "templateId": "\"read_google_doc_content\"",
     "pkg": "moodle",
     "text": "moodle read google doc content read text content from google docs",
     "keyword": "",
@@ -1508,7 +1853,7 @@
     ]
   },
   {
-    "templateId": "moodle.read_quiz_from_google_doc",
+    "templateId": "\"read_quiz_from_google_doc\"",
     "pkg": "moodle",
     "text": "moodle read quiz from google doc parse quiz questions and answers from google doc",
     "keyword": "",
@@ -1526,7 +1871,7 @@
     ]
   },
   {
-    "templateId": "moodle.create_quiz_from_google_doc",
+    "templateId": "\"create_quiz_from_google_doc\"",
     "pkg": "moodle",
     "text": "moodle create quiz from google doc create quiz file from google doc",
     "keyword": "",
@@ -1549,7 +1894,7 @@
     ]
   },
   {
-    "templateId": "moodle.upload_file_to_moodle",
+    "templateId": "\"upload_file_to_moodle\"",
     "pkg": "moodle",
     "text": "moodle upload file to moodle upload a file to moodle server",
     "keyword": "",
@@ -1567,7 +1912,7 @@
     ]
   },
   {
-    "templateId": "moodle.parse_students_from_excel",
+    "templateId": "\"parse_students_from_excel\"",
     "pkg": "moodle",
     "text": "moodle parse students from excel parse student list from excel file",
     "keyword": "",
@@ -1580,7 +1925,7 @@
     ]
   },
   {
-    "templateId": "moodle.parse_courses_from_excel",
+    "templateId": "\"parse_courses_from_excel\"",
     "pkg": "moodle",
     "text": "moodle parse courses from excel parse course list from excel file",
     "keyword": "",
@@ -1593,7 +1938,7 @@
     ]
   },
   {
-    "templateId": "moodle.bulk_create_students",
+    "templateId": "\"bulk_create_students\"",
     "pkg": "moodle",
     "text": "moodle bulk create students create multiple students at once",
     "keyword": "",
@@ -1606,7 +1951,7 @@
     ]
   },
   {
-    "templateId": "moodle.bulk_create_courses_and_enrol_students",
+    "templateId": "\"bulk_create_courses_and_enrol_students\"",
     "pkg": "moodle",
     "text": "moodle bulk create courses and enrol students create multiple courses and enrol students",
     "keyword": "",
@@ -1624,7 +1969,7 @@
     ]
   },
   {
-    "templateId": "moodle.upload_file_to_google_drive",
+    "templateId": "\"upload_file_to_google_drive\"",
     "pkg": "moodle",
     "text": "moodle upload file to google drive",
     "keyword": "",
@@ -1642,7 +1987,7 @@
     ]
   },
   {
-    "templateId": "moodle.download_file_from_google_drive",
+    "templateId": "\"download_file_from_google_drive\"",
     "pkg": "moodle",
     "text": "moodle download file from google drive",
     "keyword": "",
@@ -1660,7 +2005,7 @@
     ]
   },
   {
-    "templateId": "moodle.create_quiz_and_upload_to_drive",
+    "templateId": "\"create_quiz_and_upload_to_drive\"",
     "pkg": "moodle",
     "text": "moodle create quiz and upload to drive create quiz from google doc and upload to drive",
     "keyword": "",
@@ -1678,7 +2023,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_user_by_username",
+    "templateId": "\"get_user_by_username\"",
     "pkg": "moodle",
     "text": "moodle get user by username get user information by username",
     "keyword": "",
@@ -1691,7 +2036,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_user_by_email",
+    "templateId": "\"get_user_by_email\"",
     "pkg": "moodle",
     "text": "moodle get user by email get user information by email address",
     "keyword": "",
@@ -1704,7 +2049,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_user_by_username_or_email",
+    "templateId": "\"get_user_by_username_or_email\"",
     "pkg": "moodle",
     "text": "moodle get user by username or email get user by username or email (flexible search)",
     "keyword": "",
@@ -1717,7 +2062,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_assignment_id_from_url",
+    "templateId": "\"get_assignment_id_from_url\"",
     "pkg": "moodle",
     "text": "moodle get assignment id from url extract assignment course module id from moodle url",
     "keyword": "",
@@ -1730,7 +2075,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_assignment_instance_id_from_cmid",
+    "templateId": "\"get_assignment_instance_id_from_cmid\"",
     "pkg": "moodle",
     "text": "moodle get assignment instance id from course module id convert course module id to assignment instance id",
     "keyword": "",
@@ -1748,7 +2093,7 @@
     ]
   },
   {
-    "templateId": "moodle.create_submission_for_student",
+    "templateId": "\"create_submission_for_student\"",
     "pkg": "moodle",
     "text": "moodle create submission for student create/submit assignment for a student",
     "keyword": "",
@@ -1771,7 +2116,7 @@
     ]
   },
   {
-    "templateId": "moodle.submit_assignment_for_students",
+    "templateId": "\"submit_assignment_for_students\"",
     "pkg": "moodle",
     "text": "moodle submit assignment for students create submissions for multiple students",
     "keyword": "",
@@ -1789,7 +2134,7 @@
     ]
   },
   {
-    "templateId": "moodle.setup_gemini_ai",
+    "templateId": "\"setup_gemini_ai\"",
     "pkg": "moodle",
     "text": "moodle setup gemini ai setup gemini ai for automatic grading",
     "keyword": "",
@@ -1802,7 +2147,7 @@
     ]
   },
   {
-    "templateId": "moodle.grade_submission_with_gemini",
+    "templateId": "\"grade_submission_with_gemini\"",
     "pkg": "moodle",
     "text": "moodle grade submission with gemini grade a student submission using gemini ai",
     "keyword": "",
@@ -1830,7 +2175,7 @@
     ]
   },
   {
-    "templateId": "moodle.grade_image_submission_with_gemini_vision",
+    "templateId": "\"grade_image_submission_with_gemini_vision\"",
     "pkg": "moodle",
     "text": "moodle grade image submission with gemini vision grade student submission from image using gemini vision",
     "keyword": "",
@@ -1858,7 +2203,7 @@
     ]
   },
   {
-    "templateId": "moodle.upload_grades_to_moodle",
+    "templateId": "\"upload_grades_to_moodle\"",
     "pkg": "moodle",
     "text": "moodle upload grades to moodle upload grades to moodle assignment gradebook",
     "keyword": "",
@@ -1876,7 +2221,7 @@
     ]
   },
   {
-    "templateId": "moodle.export_grading_results_to_excel",
+    "templateId": "\"export_grading_results_to_excel\"",
     "pkg": "moodle",
     "text": "moodle export grading results to excel export grading results to excel file",
     "keyword": "",
@@ -1899,7 +2244,7 @@
     ]
   },
   {
-    "templateId": "moodle.export_grading_results_to_csv",
+    "templateId": "\"export_grading_results_to_csv\"",
     "pkg": "moodle",
     "text": "moodle export grading results to csv export grading results to csv for moodle gradebook import",
     "keyword": "",
@@ -1927,7 +2272,7 @@
     ]
   },
   {
-    "templateId": "moodle.export_detailed_grading_results_to_excel",
+    "templateId": "\"export_detailed_grading_results_to_excel\"",
     "pkg": "moodle",
     "text": "moodle export detailed grading results to excel export detailed student answers and grading breakdown to excel",
     "keyword": "",
@@ -1950,7 +2295,7 @@
     ]
   },
   {
-    "templateId": "moodle.export_student_answers_to_csv",
+    "templateId": "\"export_student_answers_to_csv\"",
     "pkg": "moodle",
     "text": "moodle export student answers to csv export only student answers to csv (without grading details)",
     "keyword": "",
@@ -1968,7 +2313,7 @@
     ]
   },
   {
-    "templateId": "moodle.complete_auto_grading_and_upload_workflow",
+    "templateId": "\"complete_auto_grading_and_upload_workflow\"",
     "pkg": "moodle",
     "text": "moodle complete auto grading and upload workflow grade submissions and upload results to moodle",
     "keyword": "",
@@ -2006,7 +2351,7 @@
     ]
   },
   {
-    "templateId": "moodle.grade_all_image_submissions",
+    "templateId": "\"grade_all_image_submissions\"",
     "pkg": "moodle",
     "text": "moodle grade all image submissions grade all image submissions using gemini vision",
     "keyword": "",
@@ -2034,7 +2379,7 @@
     ]
   },
   {
-    "templateId": "moodle.list_files_in_google_drive_folder",
+    "templateId": "\"list_files_in_google_drive_folder\"",
     "pkg": "moodle",
     "text": "moodle list files in google drive folder list all files in a google drive folder",
     "keyword": "",
@@ -2047,7 +2392,7 @@
     ]
   },
   {
-    "templateId": "moodle.complete_bulk_enrollment_workflow",
+    "templateId": "\"complete_bulk_enrollment_workflow\"",
     "pkg": "moodle",
     "text": "moodle complete bulk enrollment workflow download excel from drive, create students and courses",
     "keyword": "",
@@ -2065,7 +2410,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_course_grades",
+    "templateId": "\"get_course_grades\"",
     "pkg": "moodle",
     "text": "moodle get course grades get all student grades in a course",
     "keyword": "",
@@ -2078,7 +2423,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_assignment_submissions",
+    "templateId": "\"get_assignment_submissions\"",
     "pkg": "moodle",
     "text": "moodle get assignment submissions get all student submissions for an assignment",
     "keyword": "",
@@ -2091,7 +2436,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_assignment_grades",
+    "templateId": "\"get_assignment_grades\"",
     "pkg": "moodle",
     "text": "moodle get assignment grades get grades for all students in an assignment",
     "keyword": "",
@@ -2104,7 +2449,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_course_enrolled_users",
+    "templateId": "\"get_course_enrolled_users\"",
     "pkg": "moodle",
     "text": "moodle get course enrolled users get all users enrolled in a course",
     "keyword": "",
@@ -2117,7 +2462,7 @@
     ]
   },
   {
-    "templateId": "moodle.export_course_grades_to_excel",
+    "templateId": "\"export_course_grades_to_excel\"",
     "pkg": "moodle",
     "text": "moodle export course grades to excel export all course grades to excel file",
     "keyword": "",
@@ -2135,7 +2480,7 @@
     ]
   },
   {
-    "templateId": "moodle.export_course_grades_to_csv",
+    "templateId": "\"export_course_grades_to_csv\"",
     "pkg": "moodle",
     "text": "moodle export course grades to csv export all course grades to csv file",
     "keyword": "",
@@ -2153,7 +2498,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_course_activity_completion",
+    "templateId": "\"get_course_activity_completion\"",
     "pkg": "moodle",
     "text": "moodle get course activity completion get activity completion status for course",
     "keyword": "",
@@ -2171,7 +2516,7 @@
     ]
   },
   {
-    "templateId": "moodle.generate_course_report",
+    "templateId": "\"generate_course_report\"",
     "pkg": "moodle",
     "text": "moodle generate course report generate comprehensive course report (grades, enrollments, submissions)",
     "keyword": "",
@@ -2189,7 +2534,7 @@
     ]
   },
   {
-    "templateId": "moodle.get_course_statistics",
+    "templateId": "\"get_course_statistics\"",
     "pkg": "moodle",
     "text": "moodle get course statistics get comprehensive statistics about a course",
     "keyword": "",

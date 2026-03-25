@@ -12,8 +12,8 @@ from app.schemas import GraphOutput
 load_dotenv()  # This loads environment variables from .env if present
 
 # Chọn model hỗ trợ JSON output
-MODEL_NER = "gemini-2.5-flash"
-MODEL_BPMN = "gemini-2.5-flash"
+MODEL_NER = "gemini-3-flash-preview"
+MODEL_BPMN = "gemini-3-flash-preview"
 
 # Initialize LangChain Google Generative AI models
 def get_ner_model():
@@ -227,7 +227,7 @@ def call_llm_bpmn_with_mapping(text: str, entities: List[Dict], candidates: List
         raise
 
 # ========== CALL BPMN FREE (nếu không cần mapping) ==========
-def call_llm_bpmn_free(text: str, entities: List[Dict], relations: List[Dict]) -> GraphOutput:
+def call_llm_bpmn_free(text: str) -> GraphOutput:
     model = get_bpmn_model()
     prompt = f"""
     You are a process modeling assistant in the context RPA. Your goal is to convert natural language process descriptions into a strict JSON structure representing a BPMN diagram.
