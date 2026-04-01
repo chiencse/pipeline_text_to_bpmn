@@ -94,11 +94,11 @@ def pipeline_b_start(req: Req):
         "config": req.options or {},
         "thread_id": thread_id  # Add thread_id to state for logging
     }
-    threading.Thread(
-                target=create_pipeline_log_safe,
-                args=(thread_id, req.text),
-                daemon=True
-            ).start()
+    # threading.Thread(
+    #             target=create_pipeline_log_safe,
+    #             args=(thread_id, req.text),
+    #             daemon=True
+    #         ).start()
     try:
         # Stream through the graph execution
         # When interrupt() is called, stream will yield '__interrupt__' event and stop
@@ -220,11 +220,11 @@ def pipeline_b_start(req: Req):
                 "state": state_values
             }
             # Log to database in background (non-blocking)
-            threading.Thread(
-                target=create_pipeline_log_safe,
-                args=(thread_id, req.text),
-                daemon=True
-            ).start()
+            # threading.Thread(
+            #     target=create_pipeline_log_safe,
+            #     args=(thread_id, req.text),
+            #     daemon=True
+            # ).start()
             return {
                 "thread_id": thread_id,
                 "status": "waiting_feedback",
@@ -539,11 +539,11 @@ def pipeline_b(req: Req):
         "thread_id": thread_id  # Add thread_id for logging
     }
     # Create pipeline log in background
-    threading.Thread(
-        target=create_pipeline_log_safe,
-        args=(thread_id, req.text),
-        daemon=True
-    ).start()
+    # threading.Thread(
+    #     target=create_pipeline_log_safe,
+    #     args=(thread_id, req.text),
+    #     daemon=True
+    # ).start()
     
     out = graph_b.invoke(state)
     # Log and visualize state after graph execution

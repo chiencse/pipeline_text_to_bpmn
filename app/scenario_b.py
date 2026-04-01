@@ -192,19 +192,19 @@ def retrieve_candidates_for_task(task, state: PipelineState = None):
     candidates = hybrid_search(q, k=5)
     
     # Log retrieval scores asynchronously if state is provided
-    if candidates and state:
-        # Get thread_id from state (added in pipeline_b_start)
-        thread_id = state.get("thread_id", "unknown")
+    # if candidates and state:
+    #     # Get thread_id from state (added in pipeline_b_start)
+    #     thread_id = state.get("thread_id", "unknown")
         
-        try:
-            log_retrieval_scores_async(
-                thread_id=thread_id,
-                node_id=node_id,
-                node_name=node_name,
-                candidates=candidates
-            )
-        except Exception as e:
-            print(f"[retrieve_candidates_for_task] Warning: Failed to start retrieval scores logging for node {node_id}: {e}")
+    #     try:
+    #         log_retrieval_scores_async(
+    #             thread_id=thread_id,
+    #             node_id=node_id,
+    #             node_name=node_name,
+    #             candidates=candidates
+    #         )
+    #     except Exception as e:
+    #         print(f"[retrieve_candidates_for_task] Warning: Failed to start retrieval scores logging for node {node_id}: {e}")
     
     return candidates
 
