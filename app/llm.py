@@ -12,8 +12,8 @@ from app.schemas import GraphOutput
 load_dotenv()  # This loads environment variables from .env if present
 
 # Chọn model hỗ trợ JSON output
-MODEL_NER = "gemini-3-flash-preview"
-MODEL_BPMN = "gemini-3-flash-preview"
+MODEL_NER = "gemini-2.5-flash"
+MODEL_BPMN = "gemini-2.5-flash"
 
 # Initialize LangChain Google Generative AI models
 def get_ner_model():
